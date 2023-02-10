@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView
+    x:Class="SmartEnergy.Controls.GraphicSceneControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="White"
+    Orientation="Both">
+    <Grid BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+
+        <Image
+            Aspect="Center"
+            HorizontalOptions="FillAndExpand"
+            Source="{Binding SceneImage}"
+            VerticalOptions="FillAndExpand">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tapped_MoveControl" />
+            </Image.GestureRecognizers>
+        </Image>
+
+        <AbsoluteLayout x:Name="Grid" />
+
+    </Grid>
+</ScrollView>

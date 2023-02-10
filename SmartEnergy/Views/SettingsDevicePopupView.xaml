@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView
+    x:Class="SmartEnergy.Views.SettingsDevicePopupView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:converters="clr-namespace:SmartEnergy.Converters"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    Title="{Binding Device.Device.Mac}"
+    x:DataType="viewModels:SettingsDeviceViewModel">
+
+    <ContentPage.Resources>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+    </ContentPage.Resources>
+
+    <Border
+        Grid.Row="1"
+        Style="{StaticResource CardBorderStyle}"
+        VerticalOptions="FillAndExpand">
+
+        <Grid RowDefinitions="auto, auto, *, auto">
+            <Label
+                Margin="0,15,0,15"
+                IsVisible="{Binding Device.IsOnline, Converter={StaticResource InvertedBoolConverter}}"
+                Style="{StaticResource CardHeaderLabelStyle}"
+                Text="Device is offline"
+                TextColor="{StaticResource SecondaryTextColor}" />
+
+            <Grid
+                Grid.Row="1"
+                Margin="0,15,0,25"
+                ColumnDefinitions="*,*"
+                ColumnSpacing="20"
+                HeightRequest="55"
+                HorizontalOptions="CenterAndExpand">
+                <VerticalStackLayout WidthRequest="150">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeModeCommand}" CommandParameter="{StaticResource True}" />
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="FillAndExpand"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource BoldLabelStyle}"
+                        Text="Settings"
+                        TextColor="{StaticResource Primary}" />
+                    <BoxView
+                        Margin="5,5,5,0"
+                        HeightRequest="5"
+                        IsVisible="{Binding SettingsMode}"
+                        Color="{StaticResource Primary}" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" WidthRequest="150">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeModeCommand}" CommandParameter="{StaticResource False}" />
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="FillAndExpand"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource BoldLabelStyle}"
+                        Text="Stream"
+                        TextColor="{StaticResource Primary}" />
+                    <BoxView
+                        Margin="5,5,5,0"
+                        HeightRequest="5"
+                        IsVisible="{Binding SettingsMode, Converter={StaticResource InvertedBoolConverter}}"
+                        Color="{StaticResource Primary}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <ScrollView Grid.Row="2" Orientation="Vertical">
+                <Grid
+                    Margin="15"
+                    ColumnDefinitions="*, *"
+                    IsVisible="{Binding SettingsMode}"
+                    RowDefinitions="auto, 1, auto, 1, auto, 1, auto">
+
+                    <Label
+                        Grid.Row="0"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource CardMessageLabelStyle}"
+                        Text="Relay 1"
+                        TextColor="{Binding Device.IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        IsEnabled="{Binding Device.IsOnline}"
+                        IsToggled="{Binding Relay1, Mode=TwoWay}"
+                        ThumbColor="{StaticResource Primary}"
+                        VerticalOptions="Center" />
+
+                    <BoxView
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        HeightRequest="1"
+                        Color="{StaticResource SecondaryTextColor}" />
+
+                    <Label
+                        Grid.Row="2"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource CardMessageLabelStyle}"
+                        Text="Relay 2"
+                        TextColor="{Binding Device.IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        IsEnabled="{Binding Device.IsOnline}"
+                        IsToggled="{Binding Relay2, Mode=TwoWay}"
+                        ThumbColor="{StaticResource Primary}"
+                        VerticalOptions="Center" />
+
+                    <BoxView
+                        Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        HeightRequest="1"
+                        Color="{StaticResource SecondaryTextColor}" />
+
+                    <Label
+                        Grid.Row="4"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource CardMessageLabelStyle}"
+                        Text="Relay 3"
+                        TextColor="{Binding Device.IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        IsEnabled="{Binding Device.IsOnline}"
+                        IsToggled="{Binding Relay3, Mode=TwoWay}"
+                        ThumbColor="{StaticResource Primary}"
+                        VerticalOptions="Center" />
+
+                    <BoxView
+                        Grid.Row="5"
+                        Grid.ColumnSpan="2"
+                        HeightRequest="1"
+                        Color="{StaticResource SecondaryTextColor}" />
+
+                    <Label
+                        Grid.Row="6"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource CardMessageLabelStyle}"
+                        Text="Relay 4"
+                        TextColor="{Binding Device.IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        IsEnabled="{Binding Device.IsOnline}"
+                        IsToggled="{Binding Relay4, Mode=TwoWay}"
+                        ThumbColor="{StaticResource Primary}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </ScrollView>
+
+            <ScrollView
+                Grid.Row="2"
+                Margin="15"
+                IsVisible="{Binding SettingsMode, Converter={StaticResource InvertedBoolConverter}}"
+                Orientation="Vertical">
+                <Label Text="{Binding Logs}" />
+            </ScrollView>
+
+            <Button
+                Grid.Row="3"
+                Margin="0,0,0,25"
+                BackgroundColor="{StaticResource ErrorColor}"
+                Command="{Binding DeleteDeviceCommand}"
+                HorizontalOptions="CenterAndExpand"
+                Style="{StaticResource CardButtonStyle}"
+                Text="Remove" />
+        </Grid>
+    </Border>
+
+</views:BaseView>

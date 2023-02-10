@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePopupPage
+    x:Class="SmartEnergy.Views.SceneDevicePopupView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Animations="clr-namespace:Mopups.Animations;assembly=Mopups"
+    xmlns:Mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:DataType="viewModels:SceneDeviceViewModel"
+    BackgroundInputTransparent="True"
+    CloseWhenBackgroundIsClicked="False">
+
+    <Grid BackgroundColor="{StaticResource PopupOverlayColor}">
+        <Border Style="{StaticResource CardBorderStyle}" WidthRequest="{OnIdiom Default=400, Phone=-1}">
+            <Grid
+                Margin="15"
+                BackgroundColor="White"
+                HeightRequest="400"
+                HorizontalOptions="CenterAndExpand"
+                RowDefinitions="*, auto"
+                VerticalOptions="CenterAndExpand">
+                <CollectionView
+                    ItemsSource="{Binding Datas}"
+                    SelectedItem="{Binding SelectedDevice}"
+                    SelectionChangedCommand="{Binding SelectDeviceCommand}"
+                    SelectionMode="Single">
+                    <CollectionView.Header>
+                        <Grid HeightRequest="55">
+                            <Label Style="{StaticResource TableHeaderStyle}" Text="Mac address" />
+                        </Grid>
+                    </CollectionView.Header>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="database:Device">
+                            <Grid HeightRequest="55">
+                                <Label Style="{StaticResource TableRowStyle}" Text="{Binding Mac}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button
+                    Grid.Row="1"
+                    Margin="0,15,0,0"
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{StaticResource True}"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource CardButtonStyle}"
+                    Text="Cancel" />
+            </Grid>
+        </Border>
+    </Grid>
+</views:BasePopupPage>

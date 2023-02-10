@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView
+    x:Class="SmartEnergy.Views.SceneView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:Name="Root"
+    Title="Scenes"
+    x:DataType="viewModels:SceneViewModel">
+    <Border
+        HorizontalOptions="FillAndExpand"
+        Style="{StaticResource CardBorderStyle}"
+        VerticalOptions="FillAndExpand">
+        <Grid RowDefinitions="auto, *, auto">
+            <Label
+                Margin="0,15,0,25"
+                Style="{StaticResource CardHeaderLabelStyle}"
+                Text="Scenes" />
+
+            <CollectionView
+                Grid.Row="1"
+                Margin="25,0,25,15"
+                ItemsSource="{Binding Scenes}">
+                <CollectionView.Header>
+                    <Grid ColumnDefinitions="50*,40*,10*" HeightRequest="55">
+
+                        <Label Style="{StaticResource TableHeaderStyle}" Text="Name" />
+
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource TableHeaderStyle}"
+                            Text="Devices" />
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout VerticalOptions="CenterAndExpand">
+                        <Image>
+                            <Image.Source>
+                                <material:MaterialImageSource
+                                    Glyph="{x:Static material:MaterialIcon.FolderCancel}"
+                                    Size="100"
+                                    Color="{StaticResource SecondaryTextColor}" />
+                            </Image.Source>
+                        </Image>
+                        <Label
+                            Style="{StaticResource CardHeaderLabelStyle}"
+                            Text="No scenes"
+                            TextColor="{StaticResource SecondaryTextColor}" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="database:Scene">
+                        <Grid
+                            ColumnDefinitions="50*,40*,10*"
+                            HeightRequest="55"
+                            RowDefinitions="54, 1">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectSceneCommand}" CommandParameter="{Binding}" />
+                            </Grid.GestureRecognizers>
+
+                            <Label
+                                Grid.Row="0"
+                                Style="{StaticResource TableRowStyle}"
+                                Text="{Binding Name}" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource TableRowStyle}"
+                                Text="{Binding DevicesCount}" />
+
+                            <ImageButton
+                                Grid.Column="2"
+                                Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteSceneCommand}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="25">
+                                <ImageButton.Source>
+                                    <material:MaterialImageSource
+                                        Glyph="{x:Static material:MaterialIcon.Delete}"
+                                        Size="25"
+                                        Color="{StaticResource ErrorColor}" />
+                                </ImageButton.Source>
+                            </ImageButton>
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="3"
+                                HeightRequest="1"
+                                Color="{StaticResource SecondaryTextColor}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button
+                Grid.Row="2"
+                Margin="0,0,0,25"
+                Command="{Binding AddSceneCommand}"
+                HorizontalOptions="Center"
+                Style="{StaticResource CardButtonStyle}"
+                Text="Add scene" />
+
+        </Grid>
+    </Border>
+</views:BaseView>

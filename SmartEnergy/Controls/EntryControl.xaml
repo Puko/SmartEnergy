@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="SmartEnergy.Controls.EntryControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="Root">
+    <ContentView.Resources>
+
+        <Style x:Key="EntryImage" TargetType="ImageButton">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="HeightRequest" Value="27" />
+            <Setter Property="Margin" Value="0,0,5,0" />
+        </Style>
+
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="HeightRequest" Value="55" />
+            <Setter Property="Margin" Value="15,0,15,0" />
+            <Setter Property="FontFamily" Value="FFMarkProLight" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+        </Style>
+
+        <Style x:Key="EntryBorderStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="Stroke" Value="{StaticResource White}" />
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="27" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow
+                        Brush="{StaticResource Black}"
+                        Opacity="0.2"
+                        Radius="15" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentView.Resources>
+
+    <VerticalStackLayout Spacing="0">
+        <Border Style="{StaticResource EntryBorderStyle}">
+            <Grid Background="White" HorizontalOptions="FillAndExpand">
+
+                <Entry
+                    x:Name="Entry"
+                    IsPassword="{Binding Source={x:Reference Root}, Path=IsPassword}"
+                    Placeholder="{Binding Source={x:Reference Root}, Path=Placeholder}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Source={x:Reference Root}, Path=Text, Mode=TwoWay}" />
+
+                <ImageButton
+                    Clicked="ImageButton_Clicked"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsPassword}"
+                    Style="{StaticResource EntryImage}">
+                    <ImageButton.Source>
+                        <material:MaterialImageSource
+                            x:Name="ImageSource"
+                            Glyph="{x:Static material:MaterialIcon.Eye}"
+                            Color="{StaticResource SecondaryTextColor}" />
+                    </ImageButton.Source>
+                </ImageButton>
+            </Grid>
+        </Border>
+
+        <Label
+            Grid.Row="1"
+            Margin="35,3,35,0"
+            FontSize="13"
+            HorizontalOptions="CenterAndExpand"
+            HorizontalTextAlignment="Center"
+            IsVisible="{Binding Source={x:Reference Root}, Path=HelpText, Converter={toolkit:IsNotNullConverter}}"
+            Style="{StaticResource LightLabelStyle}"
+            Text="{Binding Source={x:Reference Root}, Path=HelpText}" />
+    </VerticalStackLayout>
+</ContentView>

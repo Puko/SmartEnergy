@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell
+    x:Class="SmartEnergy.Views.MainView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:Name="Root"
+    x:DataType="viewModels:MainViewModel">
+
+    <Shell.FlyoutHeader>
+        <Grid>
+            <Image
+                Aspect="AspectFit"
+                Opacity="0.5"
+                Source="login.jpg" />
+            <Label
+                FontSize="28"
+                Style="{StaticResource CardHeaderLabelStyle}"
+                Text="Smart energy"
+                TextColor="{StaticResource PrimaryTextColor}"
+                VerticalOptions="CenterAndExpand"
+                VerticalTextAlignment="Center" />
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="Scenes">
+        <ShellContent>
+            <ShellContent.Content>
+                <views:SceneView BindingContext="{Binding SceneViewModel}" />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Logs">
+        <ShellContent>
+            <ShellContent.Content>
+                <views:LogsView BindingContext="{Binding LogsViewModel}" />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <MenuItem
+        Command="{Binding LogoutCommand}"
+        IconImageSource="help.png"
+        Text="Logout" />
+</Shell>

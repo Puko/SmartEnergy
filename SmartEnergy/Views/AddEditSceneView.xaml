@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView
+    x:Class="SmartEnergy.Views.AddEditSceneView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SmartEnergy.Controls"
+    xmlns:converters="clr-namespace:SmartEnergy.Converters"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:Name="Root"
+    x:DataType="viewModels:AddEditSceneViewModel">
+
+    <ContentPage.Resources>
+        <toolkit:IsNullConverter x:Key="IsNullConverter" />
+        <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        <converters:ModeToGlyphConverter x:Key="ModeToGlyphConverter" />
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ChangeModeCommand}" IconImageSource="{Binding GraphicMode, Converter={StaticResource ModeToGlyphConverter}}" />
+        <ToolbarItem Command="{Binding AddSceneDeviceCommand}">
+            <ToolbarItem.IconImageSource>
+                <material:MaterialImageSource Glyph="{x:Static material:MaterialIcon.Plus}" Color="{StaticResource White}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding PickSceneImageCommand}" IsEnabled="{Binding GraphicMode}">
+            <ToolbarItem.IconImageSource>
+                <material:MaterialImageSource Glyph="{x:Static material:MaterialIcon.Image}" Color="{StaticResource White}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding SaveSceneCommand}">
+            <ToolbarItem.IconImageSource>
+                <material:MaterialImageSource Glyph="{x:Static material:MaterialIcon.Check}" Color="{StaticResource White}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+
+        <Border
+            HorizontalOptions="FillAndExpand"
+            Style="{StaticResource CardBorderStyle}"
+            VerticalOptions="FillAndExpand">
+            <Grid RowDefinitions="*, auto">
+                <CollectionView Margin="25,0,25,15" ItemsSource="{Binding Devices}">
+                    <CollectionView.Header>
+                        <Grid ColumnDefinitions="60*,20*,10*" HeightRequest="55">
+                            <Label Style="{StaticResource TableHeaderStyle}" Text="Mac address" />
+                            <Label
+                                Grid.Column="1"
+                                Style="{StaticResource TableHeaderStyle}"
+                                Text="Online" />
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout VerticalOptions="CenterAndExpand">
+                            <Image>
+                                <Image.Source>
+                                    <material:MaterialImageSource
+                                        Glyph="{x:Static material:MaterialIcon.Devices}"
+                                        Size="100"
+                                        Color="{StaticResource SecondaryTextColor}" />
+                                </Image.Source>
+                            </Image>
+                            <Label
+                                Style="{StaticResource CardHeaderLabelStyle}"
+                                Text="No devices"
+                                TextColor="{StaticResource SecondaryTextColor}" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewModels:SceneDeviceItemViewModel">
+                            <Grid
+                                ColumnDefinitions="60*,20*,10*"
+                                HeightRequest="55"
+                                RowDefinitions="54, 1">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=BindingContext.EditDeviceCommand}" CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+
+                                <Label
+                                    Grid.Row="0"
+                                    Style="{StaticResource TableRowStyle}"
+                                    Text="{Binding Device.Mac}" />
+
+                                <ImageButton
+                                    Grid.Column="1"
+                                    HeightRequest="25"
+                                    HorizontalOptions="StartAndExpand">
+                                    <ImageButton.Source>
+                                        <material:MaterialImageSource
+                                            Glyph="{x:Static material:MaterialIcon.MoonFull}"
+                                            Size="25"
+                                            Color="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                                <ImageButton
+                                    Grid.Column="2"
+                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteDeviceCommand}"
+                                    CommandParameter="{Binding}"
+                                    HeightRequest="25">
+                                    <ImageButton.Source>
+                                        <material:MaterialImageSource
+                                            Glyph="{x:Static material:MaterialIcon.Delete}"
+                                            Size="25"
+                                            Color="{StaticResource ErrorColor}" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                                <BoxView
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    HeightRequest="1"
+                                    Color="{StaticResource SecondaryTextColor}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+        <controls:GraphicSceneControl
+            Devices="{Binding Devices}"
+            EditDeviceCommand="{Binding EditDeviceCommand}"
+            IsVisible="{Binding GraphicMode}"
+            Scene="{Binding Scene}" />
+
+    </Grid>
+</views:BaseView>

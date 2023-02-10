@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<views:BaseView
+    x:Class="SmartEnergy.Views.LoginView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SmartEnergy.Controls"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:DataType="viewModels:LoginViewModel"
+    BackgroundColor="{StaticResource Primary}"
+    BackgroundImageSource="login.jpg"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <Border Style="{StaticResource CardBorderStyle}">
+                <VerticalStackLayout Style="{StaticResource CardLayoutStyle}">
+                    <Label
+                        Margin="0,0,0,25"
+                        Style="{StaticResource CardHeaderLabelStyle}"
+                        Text="Login" />
+                    <controls:EntryControl
+                        Margin="0,0,0,15"
+                        Placeholder="User name"
+                        Text="{Binding Username, Mode=TwoWay}" />
+                    <controls:EntryControl
+                        Margin="0,0,0,25"
+                        IsPassword="True"
+                        Placeholder="Password"
+                        Text="{Binding Pasword, Mode=TwoWay}" />
+
+                    <Button
+                        Command="{Binding LoginCommand}"
+                        HorizontalOptions="CenterAndExpand"
+                        Style="{StaticResource CardButtonStyle}"
+                        Text="Login" />
+
+                    <ActivityIndicator
+                        Margin="0,15,0,0"
+                        HorizontalOptions="CenterAndExpand"
+                        IsRunning="{Binding IsBusy}"
+                        Color="{StaticResource Primary}" />
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+    </ContentPage.Content>
+</views:BaseView>

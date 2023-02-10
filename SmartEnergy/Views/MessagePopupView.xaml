@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePopupPage
+    x:Class="SmartEnergy.Views.MessagePopupView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    x:DataType="viewModels:MessagePopupViewModel"
+    BackgroundInputTransparent="True"
+    CloseWhenBackgroundIsClicked="False">
+
+    <Grid BackgroundColor="{StaticResource PopupOverlayColor}">
+        <Border Style="{StaticResource CardBorderStyle}" WidthRequest="{OnIdiom Default=400, Phone=-1}">
+            <VerticalStackLayout Style="{StaticResource CardLayoutStyle}">
+                <Label
+                    Margin="0,0,0,25"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource CardHeaderLabelStyle}"
+                    Text="Message" />
+
+                <Label
+                    Margin="0,0,0,25"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource CardMessageLabelStyle}"
+                    Text="{Binding Message}" />
+
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="15">
+                    <Button
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{StaticResource True}"
+                        HorizontalOptions="CenterAndExpand"
+                        IsVisible="{Binding IsConfirmation}"
+                        Style="{StaticResource CardButtonSecondaryStyle}"
+                        Text="Cancel" />
+
+                    <Button
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{StaticResource False}"
+                        HorizontalOptions="CenterAndExpand"
+                        Style="{StaticResource CardButtonStyle}"
+                        Text="Ok" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</views:BasePopupPage>
