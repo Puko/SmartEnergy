@@ -74,14 +74,14 @@ namespace SmartEnergy.Controls
 
         public void Move(double x, double y)
         {
-            OriginalX = x;
-            OriginalY= y;
+            OriginalX = x - _width / 2;
+            OriginalY = y - _height / 2;
 
             Device.Device.OriginalX = OriginalX;
             Device.Device.OriginalY = OriginalY;
 
             AbsoluteLayout.SetLayoutBounds(this, new Rect(OriginalX, OriginalY, _width, _height));
-        }  
+        }
 
         public static ControlButton Create(SceneDeviceItemViewModel sceneDevice,
             double width, double height)

@@ -47,7 +47,10 @@
             Style="{StaticResource CardBorderStyle}"
             VerticalOptions="FillAndExpand">
             <Grid RowDefinitions="*, auto">
-                <CollectionView Margin="25,0,25,15" ItemsSource="{Binding Devices}">
+                <CollectionView
+                    x:Name="Collection"
+                    Margin="25,0,25,15"
+                    ItemsSource="{Binding Devices}">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="60*,20*,10*" HeightRequest="55">
                             <Label Style="{StaticResource TableHeaderStyle}" Text="Mac address" />
@@ -58,8 +61,15 @@
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.EmptyView>
-                        <VerticalStackLayout VerticalOptions="CenterAndExpand">
-                            <Image>
+                        <Grid
+                            BackgroundColor="Transparent"
+                            HeightRequest="{Binding Source={x:Reference Collection}, Path=Height}"
+                            RowDefinitions="*, *"
+                            VerticalOptions="FillAndExpand">
+                            <Image
+                                HeightRequest="50"
+                                VerticalOptions="EndAndExpand"
+                                WidthRequest="50">
                                 <Image.Source>
                                     <material:MaterialImageSource
                                         Glyph="{x:Static material:MaterialIcon.Devices}"
@@ -68,10 +78,12 @@
                                 </Image.Source>
                             </Image>
                             <Label
+                                Grid.Row="1"
                                 Style="{StaticResource CardHeaderLabelStyle}"
                                 Text="No devices"
-                                TextColor="{StaticResource SecondaryTextColor}" />
-                        </VerticalStackLayout>
+                                TextColor="{StaticResource SecondaryTextColor}"
+                                VerticalOptions="StartAndExpand" />
+                        </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="viewModels:SceneDeviceItemViewModel">

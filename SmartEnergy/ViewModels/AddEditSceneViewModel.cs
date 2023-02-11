@@ -214,11 +214,11 @@ namespace SmartEnergy.ViewModels
         [RelayCommand]
         public async Task DeleteDeviceAsync(SceneDeviceItemViewModel device)
         {
-            var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x =>
+            var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x =>
             {
                 x.Message = $"Do you really want to delete device {device.Device.Mac}?";
                 x.IsConfirmation = true;
-            });
+            }));
 
             if(!vm.Cancelled)
                 Devices.Remove(device);

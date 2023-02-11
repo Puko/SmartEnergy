@@ -9,7 +9,10 @@
         Padding="30"
         Spacing="30"
         VerticalOptions="CenterAndExpand">
-        <Image Source="relay_color.png" />
+        <Image
+            HeightRequest="50"
+            Source="relay_color.png"
+            WidthRequest="50" />
         <Label
             Style="{StaticResource CardHeaderLabelStyle}"
             Text="Loading..."

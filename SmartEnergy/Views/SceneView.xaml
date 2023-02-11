@@ -21,6 +21,7 @@
                 Text="Scenes" />
 
             <CollectionView
+                x:Name="Collection"
                 Grid.Row="1"
                 Margin="25,0,25,15"
                 ItemsSource="{Binding Scenes}">
@@ -36,8 +37,15 @@
                     </Grid>
                 </CollectionView.Header>
                 <CollectionView.EmptyView>
-                    <VerticalStackLayout VerticalOptions="CenterAndExpand">
-                        <Image>
+                    <Grid
+                        BackgroundColor="Transparent"
+                        HeightRequest="{Binding Source={x:Reference Collection}, Path=Height}"
+                        RowDefinitions="*, *"
+                        VerticalOptions="FillAndExpand">
+                        <Image
+                            HeightRequest="50"
+                            VerticalOptions="EndAndExpand"
+                            WidthRequest="50">
                             <Image.Source>
                                 <material:MaterialImageSource
                                     Glyph="{x:Static material:MaterialIcon.FolderCancel}"
@@ -46,10 +54,12 @@
                             </Image.Source>
                         </Image>
                         <Label
+                            Grid.Row="1"
                             Style="{StaticResource CardHeaderLabelStyle}"
                             Text="No scenes"
-                            TextColor="{StaticResource SecondaryTextColor}" />
-                    </VerticalStackLayout>
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            VerticalOptions="StartAndExpand" />
+                    </Grid>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="database:Scene">

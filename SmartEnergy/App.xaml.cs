@@ -10,14 +10,17 @@ namespace SmartEnergy;
 public partial class App : Application
 {
     private readonly INavigationService _navigationService;
+    private readonly ILogService _logService;
     private readonly UserService _userService;
     private readonly WebsocketClient _websocketClient;
 
-    public App(INavigationService navigationService, UserService userService, WebsocketClient websocketClient)
+    public App(INavigationService navigationService, ILogService logService,
+        UserService userService, WebsocketClient websocketClient)
     {
         InitializeComponent();
 
         _navigationService = navigationService;
+        _logService = logService;
         _userService = userService;
         _websocketClient = websocketClient;
 
@@ -28,12 +31,14 @@ public partial class App : Application
     {
         try
         {
+            _logService.Info("Connecting to websocket...");
+
             await _websocketClient.ConnectAsync();
             Listen();
         }
-        catch 
+        catch (Exception e)
         {
-            //todo log
+            _logService.Exception(e, "Can't connecto to websocket!");
         }
 
         if (_userService.IsLogged())

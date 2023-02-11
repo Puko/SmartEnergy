@@ -15,12 +15,12 @@ namespace SmartEnergy.Extensions
             if (response?.IsTokenExpired == true)
             {
                 await client.UnsubscribeAll();
-                await MainThread.InvokeOnMainThreadAsync(async () =>
+                await MainThread.InvokeOnMainThreadAsync((Func<Task>)(async () =>
                 {
-                    await navigationService.ShowPopupAsync<MessagePopupViewModel>(x => { x.Message = "Device token is expired. Please login again"; });
+                    await navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x => { x.Message = "Device token is expired. Please login again"; }));
                     userService.Logout();
                     await navigationService.NavigateAsync<LoginViewModel>(resetNavigation: true);
-                });
+                }));
 
                 return true;
             }
