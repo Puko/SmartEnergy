@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>SmartEnergy</ApplicationTitle>
+		<ApplicationTitle>Smart Energy</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.smartenergy</ApplicationId>
+		<ApplicationId>com.smartenergy</ApplicationId>
 		<ApplicationIdGuid>1ade2cc7-1992-47b6-8d0d-6ce434a2efa2</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -33,27 +33,21 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\relay_color.svg" BaseSize="32,32"  ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFFFFF" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFFFFF" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\relay_color.svg" BaseSize="32,32" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Fonts\materialdesignicons-webfont.ttf" />
-	  <None Remove="Resources\Images\login.jpg" />
-	  <None Remove="Resources\Images\relay.png" />
-	  <None Remove="Resources\Images\relay_color.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -75,6 +69,18 @@
 	  <Compile Update="Controls\EntryControl.xaml.cs">
 	    <DependentUpon>EntryControl.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Localization\Strings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Strings.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Localization\Strings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,6 +103,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingsDevicePopupView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\StateView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

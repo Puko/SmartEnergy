@@ -3,16 +3,11 @@
     x:Class="SmartEnergy.Views.LoadingView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="LoadingView"
     NavigationPage.HasNavigationBar="False">
     <VerticalStackLayout
         Padding="30"
         Spacing="30"
         VerticalOptions="CenterAndExpand">
-        <Image
-            HeightRequest="50"
-            Source="relay_color.png"
-            WidthRequest="50" />
         <Label
             Style="{StaticResource CardHeaderLabelStyle}"
             Text="Loading..."

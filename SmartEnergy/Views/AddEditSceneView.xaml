@@ -53,11 +53,11 @@
                     ItemsSource="{Binding Devices}">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="60*,20*,10*" HeightRequest="55">
-                            <Label Style="{StaticResource TableHeaderStyle}" Text="Mac address" />
+                            <Label Style="{StaticResource TableHeaderStyle}" Text="{Binding Localization[MacAddress], Mode=OneWay}" />
                             <Label
                                 Grid.Column="1"
                                 Style="{StaticResource TableHeaderStyle}"
-                                Text="Online" />
+                                Text="{Binding Localization[Online], Mode=OneWay}" />
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.EmptyView>
@@ -80,7 +80,7 @@
                             <Label
                                 Grid.Row="1"
                                 Style="{StaticResource CardHeaderLabelStyle}"
-                                Text="No devices"
+                                Text="{Binding Localization[NoDevices], Mode=OneWay}"
                                 TextColor="{StaticResource SecondaryTextColor}"
                                 VerticalOptions="StartAndExpand" />
                         </Grid>

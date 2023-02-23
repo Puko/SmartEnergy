@@ -17,7 +17,7 @@
                     Margin="0,0,0,25"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource CardHeaderLabelStyle}"
-                    Text="Message" />
+                    Text="{Binding Localization[Message], Mode=OneWay}" />
 
                 <Label
                     Margin="0,0,0,25"
@@ -32,14 +32,14 @@
                         HorizontalOptions="CenterAndExpand"
                         IsVisible="{Binding IsConfirmation}"
                         Style="{StaticResource CardButtonSecondaryStyle}"
-                        Text="Cancel" />
+                        Text="{Binding Localization[Cancel], Mode=OneWay}" />
 
                     <Button
                         Command="{Binding CloseCommand}"
                         CommandParameter="{StaticResource False}"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource CardButtonStyle}"
-                        Text="Ok" />
+                        Text="{Binding Localization[Ok], Mode=OneWay}" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </Border>

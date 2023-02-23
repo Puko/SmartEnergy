@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView
+    x:Class="SmartEnergy.Views.StateView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:app="clr-namespace:SmartEnergy"
+    xmlns:converters="clr-namespace:SmartEnergy.Converters"
+    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
+    xmlns:material="clr-namespace:SmartEnergy.Material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    xmlns:views="clr-namespace:SmartEnergy.Views"
+    Title="{Binding Localization[Settings], Mode=OneWay}"
+    x:DataType="viewModels:StateViewModel">
+
+    <ContentPage.Resources>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+    </ContentPage.Resources>
+
+    <Border Style="{StaticResource CardBorderStyle}" VerticalOptions="FillAndExpand">
+
+        <Grid
+            Margin="25,0,25,15"
+            ColumnDefinitions="*,auto, auto"
+            RowDefinitions="auto, 1,auto, 1">
+            <Label
+                Grid.Row="0"
+                HorizontalOptions="StartAndExpand"
+                Style="{StaticResource CardMessageLabelStyle}"
+                Text="{Binding Localization[State], Mode=OneWay}"
+                TextColor="{Binding Connected, Converter={StaticResource BoolToColorConverter}}"
+                VerticalOptions="Center" />
+
+            <ImageButton
+                Grid.Column="1"
+                HeightRequest="25"
+                HorizontalOptions="EndAndExpand">
+                <ImageButton.Source>
+                    <material:MaterialImageSource
+                        Glyph="{x:Static material:MaterialIcon.MoonFull}"
+                        Size="25"
+                        Color="{Binding Connected, Converter={StaticResource BoolToColorConverter}}" />
+                </ImageButton.Source>
+            </ImageButton>
+
+            <ImageButton Grid.Column="2" Command="{Binding ReconnectCommand}">
+                <ImageButton.Source>
+                    <material:MaterialImageSource Glyph="{x:Static material:MaterialIcon.Refresh}" Color="{StaticResource Primary}" />
+                </ImageButton.Source>
+            </ImageButton>
+
+            <BoxView
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                HeightRequest="1"
+                Color="{StaticResource SecondaryTextColor}" />
+
+            <BoxView
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Color="{StaticResource SecondaryTextColor}" />
+
+            <Label
+                Grid.Row="2"
+                HorizontalOptions="StartAndExpand"
+                Style="{StaticResource CardMessageLabelStyle}"
+                Text="{Binding Localization[Language], Mode=OneWay}"
+                VerticalOptions="Center" />
+
+            <Picker
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                HorizontalOptions="EndAndExpand"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding Language, Mode=TwoWay}" />
+
+            <BoxView
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                HeightRequest="1"
+                Color="{StaticResource SecondaryTextColor}" />
+        </Grid>
+    </Border>
+
+</views:BaseView>

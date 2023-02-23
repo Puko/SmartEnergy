@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SmartEnergy.Interfaces;
+using SmartEnergy.Localization;
 
 namespace SmartEnergy.ViewModels
 {
@@ -14,6 +15,7 @@ namespace SmartEnergy.ViewModels
         public virtual ValueTask Disapear() => ValueTask.CompletedTask;
         public virtual Task Shown() => Task.CompletedTask;
 
+        public LocalizationResourceManager Localization => LocalizationResourceManager.Instance;
 
         protected async Task<T> Execute<T>(Func<Task<T>> action)
         {

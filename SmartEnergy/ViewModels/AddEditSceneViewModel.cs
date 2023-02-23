@@ -91,7 +91,6 @@ namespace SmartEnergy.ViewModels
         [RelayCommand]
         public async Task<SceneDevice> AddSceneDeviceAsync()
         {
-            var point = new Point(50, 50);
             var datas = _userService.GetUserData().ToList();
             foreach (var item in Devices)
             {
@@ -111,9 +110,7 @@ namespace SmartEnergy.ViewModels
                     Mac = viewModel.SelectedDevice.Mac,
                     SceneId = Scene.Id,
                     Type = viewModel.SelectedDevice.Type,
-                    Token = viewModel.SelectedDevice.Token,
-                    OriginalX = point.X,
-                    OriginalY = point.Y
+                    Token = viewModel.SelectedDevice.Token
                 };
                 var vm = new SceneDeviceItemViewModel(sd);
                 Devices.Add(vm);
@@ -122,7 +119,7 @@ namespace SmartEnergy.ViewModels
                 if (!subscribed)
                 {
                     Devices.Remove(vm);
-                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = "Can't subscribe to websocket. Check logs for more information.");
+                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = Localization["WebsocketConnectionfailed"].ToString());
                     return null;
                 }
 
@@ -201,7 +198,7 @@ namespace SmartEnergy.ViewModels
             catch (Exception ex)
             {
                 _logger.Exception(ex, "Can't load image.");
-                await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = "Can't load image. Check logs for more information.");
+                await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = Localization["ImageLoadingFailed"].ToString());
             }
         }
 
@@ -216,7 +213,8 @@ namespace SmartEnergy.ViewModels
         {
             var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x =>
             {
-                x.Message = $"Do you really want to delete device {device.Device.Mac}?";
+                
+                x.Message = string.Format(Localization["DeleteDeviceMessage"].ToString(), device.Device.Mac);
                 x.IsConfirmation = true;
             }));
 

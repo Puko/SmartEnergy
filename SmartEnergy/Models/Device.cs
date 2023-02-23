@@ -21,7 +21,46 @@ namespace SmartEnergy.Database.Models
 
         public int UserInformationId { get; set; }
         public UserInformation UserInformation { get; set; }
-
-
     }
+
+
+
+    public class Rootobject
+    {
+        public string status { get; set; }
+        public Data data { get; set; }
+    }
+
+    public class Data
+    {
+        public R1 R1 { get; set; }
+        public R2 R2 { get; set; }
+        public R3 R3 { get; set; }
+        public R4 R4 { get; set; }
+    }
+
+    public class R1
+    {
+        public string name { get; set; }
+        public int power { get; set; }
+    }
+
+    public class R2
+    {
+        public string name { get; set; }
+        public int power { get; set; }
+    }
+
+    public class R3
+    {
+        public string name { get; set; }
+        public int power { get; set; }
+    }
+
+    public class R4
+    {
+        public string name { get; set; }
+        public int power { get; set; }
+    }
+
 }

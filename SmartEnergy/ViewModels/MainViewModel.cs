@@ -12,10 +12,12 @@ namespace SmartEnergy.ViewModels
         private readonly UserService _userService;
         private readonly INavigationService _navigationService;
 
-        public MainViewModel(SceneViewModel sceneViewModel, LogsViewModel logsViewModel, WebsocketClient client,
+        public MainViewModel(SceneViewModel sceneViewModel, StateViewModel stateViewModel,
+            LogsViewModel logsViewModel, WebsocketClient client,
             UserService userService, INavigationService navigationService)
         {
             SceneViewModel = sceneViewModel;
+            StateViewModel = stateViewModel;
             LogsViewModel = logsViewModel;
 
             _client = client;
@@ -24,6 +26,7 @@ namespace SmartEnergy.ViewModels
         }
 
         public SceneViewModel SceneViewModel { get; }
+        public StateViewModel StateViewModel { get; }
         public LogsViewModel LogsViewModel { get; }
 
         [RelayCommand]

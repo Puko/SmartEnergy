@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Animations="clr-namespace:Mopups.Animations;assembly=Mopups"
     xmlns:Mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:controls="clr-namespace:SmartEnergy.Controls"
     xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
     xmlns:views="clr-namespace:SmartEnergy.Views"
     x:DataType="viewModels:ScenePopupViewModel"
@@ -17,25 +18,21 @@
                 <Label
                     Margin="0,0,0,25"
                     Style="{StaticResource CardHeaderLabelStyle}"
-                    Text="Save" />
+                    Text="{Binding Localization[Save], Mode=OneWay}" />
 
-                <Entry
-                    Margin="0,0,0,25"
-                    Placeholder="Meno"
-                    Style="{StaticResource CardEntryStyle}"
-                    Text="{Binding Name}" />
+                <controls:EntryControl Margin="0,0,0,25" Text="{Binding Name, Mode=TwoWay}" />
 
                 <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="20">
                     <Button
                         Command="{Binding CloseCommand}"
                         CommandParameter="{StaticResource True}"
                         Style="{StaticResource CardButtonSecondaryStyle}"
-                        Text="Cancel" />
+                        Text="{Binding Localization[Cancel], Mode=OneWay}" />
                     <Button
                         Command="{Binding CloseCommand}"
                         CommandParameter="{StaticResource False}"
                         Style="{StaticResource CardButtonStyle}"
-                        Text="Ok" />
+                        Text="{Binding Localization[Ok], Mode=OneWay}" />
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>

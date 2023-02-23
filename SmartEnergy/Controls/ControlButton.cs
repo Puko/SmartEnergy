@@ -28,9 +28,6 @@ namespace SmartEnergy.Controls
                 BackgroundColor = App.Current.GetResource<Color>("Black")
             };
 
-            //_mainBtn.SetBinding(Label.BackgroundColorProperty, nameof(SceneDeviceItemViewModel.IsOnline), BindingMode.OneWay,  new BoolToColorConverter());
-
-
             _mainBtn.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,

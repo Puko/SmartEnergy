@@ -30,6 +30,18 @@ namespace SmartEnergy.ViewModels
         
         [ObservableProperty]
         private string _logs = string.Empty;
+        
+        [ObservableProperty]
+        private string _relayName1;
+        
+        [ObservableProperty]
+        private string _relayName2;
+
+        [ObservableProperty]
+        private string _relayName3;
+
+        [ObservableProperty]
+        private string _relayName4;
 
         public SettingsDeviceViewModel(ILogService logService, INavigationService navigationService, UserService userService,
             WebsocketClient client, SmartEnergyApiService apiService)
@@ -92,6 +104,25 @@ namespace SmartEnergy.ViewModels
             }
         }
 
+        public override async Task InitializeAsync()
+        {
+            var result = await _apiService.GetDeviceRelaySettings(Device.Device.Token);
+            if(result.Succes)
+            {
+                RelayName1 = result.Value.Settings.R1.Name;
+                RelayName2 = result.Value.Settings.R2.Name;
+                RelayName3 = result.Value.Settings.R3.Name;
+                RelayName4 = result.Value.Settings.R4.Name;
+            }
+            else
+            {
+                RelayName1 = "Relay 1";
+                RelayName2 = "Relay 2";
+                RelayName3 = "Relay 3";
+                RelayName4 = "Relay 4";
+            }
+        }
+
         public override Task Shown()
         {
             _client.Subscribe(this);
@@ -146,16 +177,16 @@ namespace SmartEnergy.ViewModels
         public void ChangeMode(bool isSettingsMode)
         {
             SettingsMode = isSettingsMode;
-        }   
+        }  
         
         [RelayCommand]
         public async Task DeleteDeviceAsync()
         {
-            var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x =>
+            var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x =>
             {
-                x.Message = $"Do you really want to delete device {Device.Device.Mac}?";
+                x.Message = string.Format(Localization["DeleteDeviceMessage"].ToString(), Device.Device.Mac);
                 x.IsConfirmation = true;
-            }));
+            });
 
             if (!vm.Cancelled)
             {
@@ -164,38 +195,123 @@ namespace SmartEnergy.ViewModels
             }
         }
 
-        private async void SetRelay(int relay)
+        [RelayCommand]
+        public async Task EditRelayNameAsync(string relay)
         {
             if (!await CheckConnection(_navigationService))
                 return;
 
-            await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = $"Setting relay {relay}...");
+            _client.Unsubscribe(this);
+
+            ScenePopupViewModel vm = new ScenePopupViewModel(_navigationService)
+            {
+                Name = GetRelayName(relay)
+            };
+
+            await _navigationService.ShowPopupAsync(vm);
+
+            if (!vm.Cancelled)
+            {
+                await EditRelayAysnc(async () =>
+                {
+                    ApiResult<SetRelayResponse> result = null;
+                    switch (relay)
+                    {
+                        case "1":
+                            result = await _apiService.SetRelay1NameAsync(Device.Device.Token, vm.Name);
+                           if(result.Succes)
+                                RelayName1 = vm.Name;
+                            break;
+                        case"2":
+                            result = await _apiService.SetRelay2NameAsync(Device.Device.Token, vm.Name);
+                            if (result.Succes)
+                                RelayName2 = vm.Name;
+                            break;
+                        case "3":
+                            result = await _apiService.SetRelay3NameAsync(Device.Device.Token, vm.Name);
+                            if (result.Succes)
+                                RelayName3 = vm.Name;
+                            break;
+                        case "4":
+                            result = await _apiService.SetRelay4NameAsync(Device.Device.Token, vm.Name);
+                            if (result.Succes)
+                                RelayName4 = vm.Name;
+                            break;
+                    }
+
+                    return result;
+                }, Localization["ChangingRelayName"].ToString());
+            }
+
+            _client.Subscribe(this);
+
+        }
+
+        private async void SetRelay(int relay)
+        {
+            _client.Unsubscribe(this);
+
+            await EditRelayAysnc(async () =>
+            {
+                ApiResult<SetRelayResponse> result = null;
+                switch (relay)
+                {
+                    case 1:
+                        result = await _apiService.SetRelay1Async(Device.Device.Token, Relay1);
+                        break;
+                    case 2:
+                        result = await _apiService.SetRelay2Async(Device.Device.Token, Relay2);
+                        break;
+                    case 3:
+                        result = await _apiService.SetRelay3Async(Device.Device.Token, Relay3);
+                        break;
+                    case 4:
+                        result = await _apiService.SetRelay4Async(Device.Device.Token, Relay4);
+                        break;
+                }
+
+                return result;
+            }, Localization["SettingRelay"].ToString());
+
+            _client.Subscribe(this);
+        }
+
+        private async Task EditRelayAysnc(Func<Task<ApiResult<SetRelayResponse>>> editRelay, string message)
+        {
+            if (!await CheckConnection(_navigationService))
+                return;
+
+            await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = message);
 
             _settingRelay = true;
 
-            ApiResult<SetRelayResponse> result = null;
-
-            switch (relay)
-            {
-                case 1:
-                    result = await _apiService.SetRelay1Async(Device.Device.Token, Relay1);
-                    break;
-                case 2:
-                    result = await _apiService.SetRelay2Async(Device.Device.Token, Relay2);
-                    break;
-                case 3:
-                    result = await _apiService.SetRelay3Async(Device.Device.Token, Relay3);
-                    break;
-                case 4:
-                    result = await _apiService.SetRelay4Async(Device.Device.Token, Relay4);
-                    break;
-            }
+            ApiResult<SetRelayResponse> result = await editRelay.Invoke();
 
             await Task.Delay(1000);
 
             await _navigationService.ClosePopupAsync();
 
+            if (result?.Succes == true)
+                _logService.Info($"Set relay status: {result.Value.Status}, message: {result.Value.Message}");
+            else
+            {
+                var response = result.Response;
+                if(response != null)
+                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = result.Response.Message);
+                
+                _logService.Warning($"Set relay status failed. Code: {result?.StatusCode}, message: {result?.Message}");
+            }
+
             _settingRelay = false;
         }
+
+        private string GetRelayName(string relay) => relay switch
+        {
+            "1" => RelayName1,
+            "2" => RelayName2,
+            "3" => RelayName3,
+            "4" => RelayName4,
+            _ => $"relay_{relay}",
+        };
     }
 }

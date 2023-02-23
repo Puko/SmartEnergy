@@ -52,7 +52,7 @@ namespace SmartEnergy.ViewModels
         {
             var vm = await _navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x =>
             {
-                x.Message = $"Do you really want to delete {scene.Name} scene?";
+                x.Message = string.Format(Localization["DeleteSceneMessage"].ToString(), scene.Name);
                 x.IsConfirmation = true;
             }));
 

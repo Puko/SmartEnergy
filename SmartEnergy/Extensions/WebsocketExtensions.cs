@@ -29,7 +29,7 @@ namespace SmartEnergy.Extensions
             try
             {
                 if (!client.IsConnected)
-                    await client.ReconnectAsync();
+                    await client.ReconnectAsync(logService);
 
                 if (_subscribedDevices.Any(x => x.Equals(deviceToken)))
                     return true;

@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
     xmlns:views="clr-namespace:SmartEnergy.Views"
-    Title="LogsView"
+    Title="{Binding Localization[Logs], Mode=OneWay}"
     x:DataType="viewModels:LogsViewModel">
     <Border
         Grid.Row="1"
@@ -25,7 +25,7 @@
                 Command="{Binding RefreshCommand}"
                 HorizontalOptions="Center"
                 Style="{StaticResource CardButtonStyle}"
-                Text="Refresh" />
+                Text="{Binding Localization[Refresh], Mode=OneWay}" />
         </Grid>
     </Border>
 </views:BaseView>

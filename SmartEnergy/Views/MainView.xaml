@@ -26,7 +26,7 @@
         </Grid>
     </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Scenes">
+    <FlyoutItem Title="{Binding Localization[Scenes], Mode=OneWay}">
         <ShellContent>
             <ShellContent.Content>
                 <views:SceneView BindingContext="{Binding SceneViewModel}" />
@@ -34,7 +34,7 @@
         </ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem Title="Logs">
+    <FlyoutItem Title="{Binding Localization[Logs], Mode=OneWay}">
         <ShellContent>
             <ShellContent.Content>
                 <views:LogsView BindingContext="{Binding LogsViewModel}" />
@@ -42,8 +42,16 @@
         </ShellContent>
     </FlyoutItem>
 
+    <FlyoutItem Title="{Binding Localization[Settings], Mode=OneWay}">
+        <ShellContent>
+            <ShellContent.Content>
+                <views:StateView BindingContext="{Binding StateViewModel}" />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
     <MenuItem
         Command="{Binding LogoutCommand}"
         IconImageSource="help.png"
-        Text="Logout" />
+        Text="{Binding Localization[Logout], Mode=OneWay}" />
 </Shell>

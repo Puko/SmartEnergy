@@ -41,16 +41,30 @@ namespace SmartEnergy.Api.Websocket
             }
         }
 
-        public async Task ReconnectAsync()
+        public async Task ReconnectAsync(ILogService logService)
         {
-            _websocket.Dispose();
-            _websocket = new ClientWebSocket();
-            await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
+            try
+            {
+                _websocket.Dispose();
+                _websocket = new ClientWebSocket();
+                await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
+            }
+            catch (Exception e) 
+            {
+                logService.Exception(e, "Reconnection failed.");
+            }
         }
 
-        public async Task ConnectAsync()
+        public async Task ConnectAsync(ILogService logService)
         {
-            await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
+            try
+            {
+                await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
+            }
+            catch (Exception e)
+            {
+                logService.Exception(e, "Connection to websokcet failed.");
+            }
         }
 
         public async IAsyncEnumerable<string> ListenAsync(

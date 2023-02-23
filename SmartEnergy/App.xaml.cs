@@ -1,9 +1,11 @@
 ﻿using SmartEnergy.Api.Websocket;
 using SmartEnergy.Interfaces;
+using SmartEnergy.Localization;
 using SmartEnergy.Services;
 using SmartEnergy.ViewModels;
 using SmartEnergy.Views;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SmartEnergy;
 
@@ -29,16 +31,21 @@ public partial class App : Application
 
     protected override async void OnStart()
     {
+        var language = Preferences.Get("Language", string.Empty);
+        LocalizationResourceManager.Instance.SetCulture(string.IsNullOrEmpty(language) ? new CultureInfo("en-US") : new CultureInfo("sk-Sk"));
+
         try
         {
             _logService.Info("Connecting to websocket...");
 
-            await _websocketClient.ConnectAsync();
+            await _websocketClient.ConnectAsync(_logService);
             Listen();
+
+            _logService.Info("Connection success...");
         }
         catch (Exception e)
         {
-            _logService.Exception(e, "Can't connecto to websocket!");
+            _logService.Exception(e, "Can't connect to websocket!");
         }
 
         if (_userService.IsLogged())
@@ -51,11 +58,14 @@ public partial class App : Application
     {
         Task.Run(async () =>
         {
+            if (!_websocketClient.IsConnected)
+                return;
+
             await foreach (var message in _websocketClient.ListenAsync(CancellationToken.None))
             {
                 if (message == WebsocketClient.DisconnectedMessage)
                 {
-                    await _websocketClient.ReconnectAsync();
+                    await _websocketClient.ReconnectAsync(_logService);
                     Listen();
                 }
             }

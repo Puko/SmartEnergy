@@ -7,6 +7,7 @@ using SmartEnergy.Api.Websocket;
 using SmartEnergy.Database;
 using SmartEnergy.Database.Repositories;
 using SmartEnergy.Interfaces;
+using SmartEnergy.Localization;
 using SmartEnergy.Services;
 using SmartEnergy.ViewModels;
 using SmartEnergy.Views;
@@ -67,6 +68,7 @@ public static class MauiProgram
 		  builder.Services.AddTransient<LogsViewModel>();
 		  builder.Services.AddTransient<MainViewModel>();
 		  builder.Services.AddTransient<LoadingViewModel>();
+		  builder.Services.AddTransient<StateViewModel>();
 
 		  builder.Services.AddTransient<AddEditSceneView>();
 		  builder.Services.AddTransient<MainView>();
@@ -77,12 +79,17 @@ public static class MauiProgram
 		  builder.Services.AddTransient<SettingsDevicePopupView>();
 		  builder.Services.AddTransient<LogsView>();
 		  builder.Services.AddTransient<LoadingPopupView>();
+		  builder.Services.AddTransient<StateView>();
 
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, @"SmartEnergy.db");
         builder.Services.AddDbContext<SmartEnergyDb>(options => options.UseSqlite($"Data Source={dbPath}"));
 
 		  builder.Services.AddSingleton<INavigationService, NavigationService>();
 		  builder.Services.AddSingleton<ILogService, LogService>();
+		  builder.Services.AddSingleton<LocalizationResourceManager>(s =>
+		  {
+				return LocalizationResourceManager.Instance;
+        });
 
         var app = builder.Build();
 
@@ -95,6 +102,7 @@ public static class MauiProgram
         navigationService.RegisterView<MessagePopupView, MessagePopupViewModel>();
         navigationService.RegisterView<SettingsDevicePopupView, SettingsDeviceViewModel>();
         navigationService.RegisterView<LoadingPopupView, LoadingViewModel>();
+        navigationService.RegisterView<StateView, StateViewModel>();
 
 		  var db = app.Services.GetRequiredService<SmartEnergyDb>();
 		  db.Database.EnsureCreated();

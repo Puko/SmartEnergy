@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using SmartEnergy.Api.Websocket;
+using System.Net;
 
 namespace SmartEnergy.Api
 {
@@ -18,6 +20,25 @@ namespace SmartEnergy.Api
 
         public T Value { get; }
         public string Message { get; }
+
+        public Response Response 
+        {
+            get
+            {
+                if(Message != null)
+                {
+                    try
+                    {
+                       var result = JsonConvert.DeserializeObject<Response>(Message);
+                       return result;
+                    }
+                    catch { }
+                }
+
+                return null;
+            }
+        }
+
         public HttpStatusCode StatusCode { get; }
         public bool Succes => Value != null;
     }

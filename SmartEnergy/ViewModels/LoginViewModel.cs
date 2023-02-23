@@ -43,7 +43,7 @@ namespace SmartEnergy.ViewModels
                 }
                 else
                 {
-                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = "Zle meno alebo heslo.");
+                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = Localization["BadUsernameOrPasswordMessage"].ToString());
                 }
             }
         }

@@ -28,7 +28,7 @@
                     SelectionMode="Single">
                     <CollectionView.Header>
                         <Grid HeightRequest="55">
-                            <Label Style="{StaticResource TableHeaderStyle}" Text="Mac address" />
+                            <Label Style="{StaticResource TableHeaderStyle}" Text="{Binding Localization[MacAddress], Mode=OneWay}" />
                         </Grid>
                     </CollectionView.Header>
 
@@ -48,7 +48,7 @@
                     CommandParameter="{StaticResource True}"
                     HorizontalOptions="Center"
                     Style="{StaticResource CardButtonStyle}"
-                    Text="Cancel" />
+                    Text="{Binding Localization[Cancel], Mode=OneWay}" />
             </Grid>
         </Border>
     </Grid>

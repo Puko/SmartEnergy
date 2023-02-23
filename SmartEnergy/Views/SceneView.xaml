@@ -8,7 +8,7 @@
     xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
     xmlns:views="clr-namespace:SmartEnergy.Views"
     x:Name="Root"
-    Title="Scenes"
+    Title="{Binding Localization[Scenes], Mode=OneWay}"
     x:DataType="viewModels:SceneViewModel">
     <Border
         HorizontalOptions="FillAndExpand"
@@ -18,7 +18,7 @@
             <Label
                 Margin="0,15,0,25"
                 Style="{StaticResource CardHeaderLabelStyle}"
-                Text="Scenes" />
+                Text="{Binding Localization[Scenes], Mode=OneWay}" />
 
             <CollectionView
                 x:Name="Collection"
@@ -28,12 +28,12 @@
                 <CollectionView.Header>
                     <Grid ColumnDefinitions="50*,40*,10*" HeightRequest="55">
 
-                        <Label Style="{StaticResource TableHeaderStyle}" Text="Name" />
+                        <Label Style="{StaticResource TableHeaderStyle}" Text="{Binding Localization[Name], Mode=OneWay}" />
 
                         <Label
                             Grid.Column="1"
                             Style="{StaticResource TableHeaderStyle}"
-                            Text="Devices" />
+                            Text="{Binding Localization[Devices], Mode=OneWay}" />
                     </Grid>
                 </CollectionView.Header>
                 <CollectionView.EmptyView>
@@ -56,7 +56,7 @@
                         <Label
                             Grid.Row="1"
                             Style="{StaticResource CardHeaderLabelStyle}"
-                            Text="No scenes"
+                            Text="{Binding Localization[NoScenes], Mode=OneWay}"
                             TextColor="{StaticResource SecondaryTextColor}"
                             VerticalOptions="StartAndExpand" />
                     </Grid>
@@ -111,7 +111,7 @@
                 Command="{Binding AddSceneCommand}"
                 HorizontalOptions="Center"
                 Style="{StaticResource CardButtonStyle}"
-                Text="Add scene" />
+                Text="{Binding Localization[AddScene], Mode=OneWay}" />
 
         </Grid>
     </Border>

@@ -62,6 +62,7 @@ public partial class GraphicSceneControl : ScrollView
             var sd = (SceneDeviceItemViewModel)e.NewItems[0];
 
             ControlButton btn = CreateButton(sd);
+            btn.Move(ScrollX + btn.Width + Width/2, ScrollY + btn.Height + Height/2);
             Grid.Children.Add(btn);
 
             if (_selected != null)

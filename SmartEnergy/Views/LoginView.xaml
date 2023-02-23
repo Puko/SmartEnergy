@@ -21,19 +21,19 @@
                         Text="Login" />
                     <controls:EntryControl
                         Margin="0,0,0,15"
-                        Placeholder="User name"
+                        Placeholder="{Binding Localization[UserName], Mode=OneWay}"
                         Text="{Binding Username, Mode=TwoWay}" />
                     <controls:EntryControl
                         Margin="0,0,0,25"
                         IsPassword="True"
-                        Placeholder="Password"
+                        Placeholder="{Binding Localization[Password], Mode=OneWay}"
                         Text="{Binding Pasword, Mode=TwoWay}" />
 
                     <Button
                         Command="{Binding LoginCommand}"
                         HorizontalOptions="CenterAndExpand"
                         Style="{StaticResource CardButtonStyle}"
-                        Text="Login" />
+                        Text="{Binding Localization[Login], Mode=OneWay}" />
 
                     <ActivityIndicator
                         Margin="0,15,0,0"
