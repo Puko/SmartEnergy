@@ -8,11 +8,11 @@ namespace SmartEnergy.Controls;
 public partial class GraphicSceneControl : ScrollView
 {
     public static readonly BindableProperty DevicesProperty =
-        BindableProperty.Create(nameof(Devices), typeof(ObservableCollection<SceneDeviceItemViewModel>), typeof(GraphicSceneControl), 
+        BindableProperty.Create(nameof(Devices), typeof(ObservableCollection<SceneDeviceItemViewModel>), typeof(GraphicSceneControl),
             new ObservableCollection<SceneDeviceItemViewModel>(), propertyChanged: HandleOnDevicesChanged);
 
     public static readonly BindableProperty SceneProperty =
-        BindableProperty.Create(nameof(Scene), typeof(Scene), typeof(GraphicSceneControl),null);
+        BindableProperty.Create(nameof(Scene), typeof(Scene), typeof(GraphicSceneControl), null);
 
     public static readonly BindableProperty EditDeviceCommandProperty =
      BindableProperty.Create(nameof(EditDeviceCommand), typeof(ICommand), typeof(GraphicSceneControl), null);
@@ -21,9 +21,17 @@ public partial class GraphicSceneControl : ScrollView
     private ControlButton _selected;
 
     public GraphicSceneControl()
-	 {
-		  InitializeComponent();
-	 }
+    {
+        InitializeComponent();
+    }
+
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+        var vm = (AddEditSceneViewModel)BindingContext;
+        vm.PropertyChanged -= Vm_PropertyChanged;
+        vm.PropertyChanged += Vm_PropertyChanged;
+    }
 
     public ICommand EditDeviceCommand
     {
@@ -40,7 +48,7 @@ public partial class GraphicSceneControl : ScrollView
     public ObservableCollection<SceneDeviceItemViewModel> Devices
     {
         get { return (ObservableCollection<SceneDeviceItemViewModel>)GetValue(DevicesProperty); }
-        set { SetValue(DevicesProperty, value);}
+        set { SetValue(DevicesProperty, value); }
     }
 
     private void Tapped_MoveControl(object sender, TappedEventArgs e)
@@ -57,12 +65,12 @@ public partial class GraphicSceneControl : ScrollView
 
     private void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+        if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
         {
             var sd = (SceneDeviceItemViewModel)e.NewItems[0];
 
             ControlButton btn = CreateButton(sd);
-            btn.Move(ScrollX + btn.Width + Width/2, ScrollY + btn.Height + Height/2);
+            btn.Move(ScrollX + btn.Width + Width / 2, ScrollY + btn.Height + Height / 2);
             Grid.Children.Add(btn);
 
             if (_selected != null)
@@ -72,12 +80,12 @@ public partial class GraphicSceneControl : ScrollView
 
             btn.Select();
         }
-        else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+        else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
         {
             var sd = (SceneDeviceItemViewModel)e.OldItems[0];
 
             var ctrlBtn = Grid.Children.Cast<ControlButton>().FirstOrDefault(x => x.Device == sd);
-            if(ctrlBtn != null)
+            if (ctrlBtn != null)
             {
                 Grid.Children.Remove(ctrlBtn);
             }
@@ -119,9 +127,37 @@ public partial class GraphicSceneControl : ScrollView
 
     private static void HandleOnDevicesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if(newValue is ObservableCollection<SceneDeviceItemViewModel> devices)
+        if (newValue is ObservableCollection<SceneDeviceItemViewModel> devices)
         {
             ((GraphicSceneControl)bindable).InitCollection(devices);
+        }
+    }
+
+    private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName == nameof(AddEditSceneViewModel.SceneImage))
+        {
+            var imageToRemove = MainGrid.Children.FirstOrDefault(x => x is Image);
+            if(imageToRemove != null) 
+            { 
+                MainGrid.Children.Remove(imageToRemove);
+                imageToRemove = null;
+            }
+
+            var image = new Image
+            {
+                Aspect = Aspect.Center,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Source = ((AddEditSceneViewModel)BindingContext).SceneImage
+            };
+            TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += Tapped_MoveControl;
+            image.GestureRecognizers.Add(tapGestureRecognizer);
+
+            image.ZIndex = -1;
+            MainGrid.Children.Add(image);
+            
         }
     }
 }

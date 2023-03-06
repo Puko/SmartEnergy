@@ -55,6 +55,8 @@ namespace SmartEnergy.Services
 
         public void Delete(Scene scene)
         {
+            _sceneRepository.RemoveFromChangeTracker(scene);
+
             _sceneRepository.Delete(scene);
             _sceneRepository.Save();
         }

@@ -110,7 +110,7 @@
         <Setter Property="TextColor" Value="{StaticResource SecondaryTextColor}" />
     </Style>
 
-    <!--  ROOTIE STYLES  -->
+    <!--  SMART ENERGY STYLES  -->
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />

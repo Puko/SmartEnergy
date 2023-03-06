@@ -2,6 +2,8 @@
 using CommunityToolkit.Maui.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Platform;
 using Mopups.Hosting;
 using SmartEnergy.Api.Websocket;
 using SmartEnergy.Database;
@@ -22,6 +24,10 @@ public static class MauiProgram
 
 #if __ANDROID__
             SmartEnergy.Platforms.Android.AndroidHandlers.Init();
+#endif
+
+#if __ANDROID__
+        ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => PrependToMappingImageSource(handler, view));
 #endif
 
         builder
@@ -55,7 +61,7 @@ public static class MauiProgram
 		  builder.Services.AddSingleton(s =>
 		  {
 				var ws = new WebsocketClient(new Uri("wss://backend.merito.tech/api2-ws"));
-            return ws;
+			 return ws;
 		  });
 
 		  builder.Services.AddTransient<AddEditSceneViewModel>();
@@ -109,4 +115,11 @@ public static class MauiProgram
 
 		  return app;
 	 }
+
+#if __ANDROID__
+    public static void PrependToMappingImageSource(IImageHandler handler, Microsoft.Maui.IImage image)
+    {
+        handler.PlatformView?.Clear();
+    }
+#endif
 }

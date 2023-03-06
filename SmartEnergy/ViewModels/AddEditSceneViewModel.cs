@@ -17,6 +17,7 @@ namespace SmartEnergy.ViewModels
         private readonly SceneService _sceneService;
         private readonly UserService _userService;
         private readonly WebsocketClient _websocketClient;
+        private MemoryStream _imageStream;
 
         [ObservableProperty]
         private ImageSource _sceneImage;
@@ -191,7 +192,14 @@ namespace SmartEnergy.ViewModels
                             Scene.Image = ms.ToArray();
                         }
 
-                        SceneImage = ImageSource.FromStream(() => new MemoryStream(Scene.Image));
+                        if (_imageStream != null)
+                        {
+                            _imageStream.Dispose();
+                            _imageStream = null;
+                        }
+
+                        _imageStream = new MemoryStream(Scene.Image);
+                        SceneImage = ImageSource.FromStream(() => _imageStream);
                     }
                 }
             }
