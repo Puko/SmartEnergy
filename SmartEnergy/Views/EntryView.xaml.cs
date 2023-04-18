@@ -2,9 +2,9 @@ using Mopups.Pages;
 
 namespace SmartEnergy.Views;
 
-public partial class ScenePopupView : BasePopupPage
+public partial class EntryView : BasePopupPage
 {
-	 public ScenePopupView()
+	 public EntryView()
 	 {
 		  InitializeComponent();
 	 }

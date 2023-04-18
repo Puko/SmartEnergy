@@ -11,7 +11,7 @@ namespace SmartEnergy.Services
 {
     public class SmartEnergyApiService
     { 
-        private HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://backend.merito.tech/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://backend.merito.tech/") };
         private readonly ILogService _logService;
 
         public SmartEnergyApiService(ILogService logService)

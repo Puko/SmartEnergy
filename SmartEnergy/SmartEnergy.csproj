@@ -33,7 +33,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\relay_color.svg" BaseSize="32,32"  ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFFFFF" />
+		<MauiIcon Include="Resources\AppIcon\relay_color.svg" BaseSize="32,32" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFFFFF" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFFFFF" BaseSize="128,128" />
@@ -74,6 +74,18 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>Strings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\InfoView.xaml.cs">
+	    <DependentUpon>InfoView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\AddSceneDeviceViewModel.xaml.cs">
+	    <DependentUpon>AddSceneDeviceViewModel.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SceneListView.xaml.cs">
+	    <DependentUpon>SceneListView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\EntryView.xaml.cs">
+	    <DependentUpon>EntryView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -99,10 +111,7 @@
 	  <MauiXaml Update="Views\LogsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\SceneView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SettingsDevicePopupView.xaml">
+	  <MauiXaml Update="Views\SceneListView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\StateView.xaml">

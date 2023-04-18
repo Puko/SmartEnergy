@@ -29,7 +29,7 @@
     <FlyoutItem Title="{Binding Localization[Scenes], Mode=OneWay}">
         <ShellContent>
             <ShellContent.Content>
-                <views:SceneView BindingContext="{Binding SceneViewModel}" />
+                <views:SceneListView BindingContext="{Binding SceneViewModel}" />
             </ShellContent.Content>
         </ShellContent>
     </FlyoutItem>

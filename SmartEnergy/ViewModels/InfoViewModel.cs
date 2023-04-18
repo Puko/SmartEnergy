@@ -3,12 +3,12 @@ using SmartEnergy.Interfaces;
 
 namespace SmartEnergy.ViewModels
 {
-    public partial class MessagePopupViewModel : PopupViewModel
+    public partial class InfoViewModel : PopupViewModel
     {
         [ObservableProperty]
         private string _message;
 
-        public MessagePopupViewModel(INavigationService navigationService) 
+        public InfoViewModel(INavigationService navigationService) 
             : base(navigationService)
         {
         }

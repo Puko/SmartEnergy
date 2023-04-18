@@ -12,5 +12,18 @@ namespace SmartEnergy.Api.Websocket
         public bool Relay3 { get; set; }
         [JsonProperty("relay_4")]
         public bool Relay4 { get; set; }
+
+        public bool GetRelayState(int order)
+        {
+            switch (order)
+            {
+                case 1: return Relay1;
+                case 2: return Relay2;
+                case 3: return Relay3;
+                case 4: return Relay4;
+            }
+
+            return false;
+        }
     }
 }

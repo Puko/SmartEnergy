@@ -135,11 +135,20 @@
   <data name="DeleteSceneMessage" xml:space="preserve">
     <value>Do you really want to delete {0} scene?</value>
   </data>
+  <data name="DeviceAlreadyInScene" xml:space="preserve">
+    <value>This device is already in the scene.</value>
+  </data>
   <data name="Devices" xml:space="preserve">
     <value>Devices</value>
   </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Export failed. Check logs.</value>
+  </data>
   <data name="ImageLoadingFailed" xml:space="preserve">
     <value>Can't load image. Check logs for more information.</value>
+  </data>
+  <data name="ImportFailed" xml:space="preserve">
+    <value>Import failed. Check logs.</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
@@ -189,6 +198,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SceneName" xml:space="preserve">
+    <value>Scene name</value>
+  </data>
   <data name="Scenes" xml:space="preserve">
     <value>Scenes</value>
   </data>
@@ -203,6 +215,12 @@
   </data>
   <data name="Stream" xml:space="preserve">
     <value>Messages</value>
+  </data>
+  <data name="TurnOffRelay" xml:space="preserve">
+    <value>Shutting down relay ...</value>
+  </data>
+  <data name="TurnOnRelay" xml:space="preserve">
+    <value>Enabling relay ...</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User name</value>

@@ -135,11 +135,20 @@
   <data name="DeleteSceneMessage" xml:space="preserve">
     <value>Naozaj chcete vymazať {0} scénu?</value>
   </data>
+  <data name="DeviceAlreadyInScene" xml:space="preserve">
+    <value>Toto zariadenie je už v scéne pridané.</value>
+  </data>
   <data name="Devices" xml:space="preserve">
     <value>Zariadenia</value>
   </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Exportovanie zlyhalo. Prosím skontrolujte logy.</value>
+  </data>
   <data name="ImageLoadingFailed" xml:space="preserve">
     <value>Nepodarilo sa naćítať obrázok. Skontrolujte logy.</value>
+  </data>
+  <data name="ImportFailed" xml:space="preserve">
+    <value>Importovanie zlyhalo. Prosím skontrolujte logy.</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Jazyk</value>
@@ -189,6 +198,9 @@
   <data name="Save" xml:space="preserve">
     <value>Uložiť</value>
   </data>
+  <data name="SceneName" xml:space="preserve">
+    <value>Meno scény</value>
+  </data>
   <data name="Scenes" xml:space="preserve">
     <value>Scény</value>
   </data>
@@ -203,6 +215,12 @@
   </data>
   <data name="Stream" xml:space="preserve">
     <value>Správy</value>
+  </data>
+  <data name="TurnOffRelay" xml:space="preserve">
+    <value>Vypínam relé ...</value>
+  </data>
+  <data name="TurnOnRelay" xml:space="preserve">
+    <value>Zapínam relé ...</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Prihlasovacie meno</value>

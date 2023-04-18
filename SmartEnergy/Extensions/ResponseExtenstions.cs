@@ -17,7 +17,7 @@ namespace SmartEnergy.Extensions
                 await client.UnsubscribeAll();
                 await MainThread.InvokeOnMainThreadAsync((Func<Task>)(async () =>
                 {
-                    await navigationService.ShowPopupAsync<MessagePopupViewModel>((Action<MessagePopupViewModel>)(x => { x.Message = "Device token is expired. Please login again"; }));
+                    await navigationService.ShowPopupAsync<InfoViewModel>((Action<InfoViewModel>)(x => { x.Message = "Device token is expired. Please login again"; }));
                     userService.Logout();
                     await navigationService.NavigateAsync<LoginViewModel>(resetNavigation: true);
                 }));

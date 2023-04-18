@@ -32,7 +32,7 @@ namespace SmartEnergy.ViewModels
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
-                await navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = "You're offline. Check internet connection.");
+                await navigationService.ShowPopupAsync<InfoViewModel>(x => x.Message = "You're offline. Check internet connection.");
                 return false;
             }
 

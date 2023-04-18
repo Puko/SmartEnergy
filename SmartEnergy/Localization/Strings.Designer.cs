@@ -115,6 +115,15 @@ namespace SmartEnergy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This device is already in the scene..
+        /// </summary>
+        internal static string DeviceAlreadyInScene {
+            get {
+                return ResourceManager.GetString("DeviceAlreadyInScene", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Devices.
         /// </summary>
         internal static string Devices {
@@ -124,11 +133,29 @@ namespace SmartEnergy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export failed. Check logs..
+        /// </summary>
+        internal static string ExportFailed {
+            get {
+                return ResourceManager.GetString("ExportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t load image. Check logs for more information..
         /// </summary>
         internal static string ImageLoadingFailed {
             get {
                 return ResourceManager.GetString("ImageLoadingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import failed. Check logs..
+        /// </summary>
+        internal static string ImportFailed {
+            get {
+                return ResourceManager.GetString("ImportFailed", resourceCulture);
             }
         }
         
@@ -277,6 +304,15 @@ namespace SmartEnergy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scene name.
+        /// </summary>
+        internal static string SceneName {
+            get {
+                return ResourceManager.GetString("SceneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scenes.
         /// </summary>
         internal static string Scenes {
@@ -318,6 +354,24 @@ namespace SmartEnergy.Localization {
         internal static string Stream {
             get {
                 return ResourceManager.GetString("Stream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutting down relay ....
+        /// </summary>
+        internal static string TurnOffRelay {
+            get {
+                return ResourceManager.GetString("TurnOffRelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabling relay ....
+        /// </summary>
+        internal static string TurnOnRelay {
+            get {
+                return ResourceManager.GetString("TurnOnRelay", resourceCulture);
             }
         }
         

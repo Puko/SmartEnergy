@@ -43,7 +43,7 @@ namespace SmartEnergy.ViewModels
                 }
                 else
                 {
-                    await _navigationService.ShowPopupAsync<MessagePopupViewModel>(x => x.Message = Localization["BadUsernameOrPasswordMessage"].ToString());
+                    await _navigationService.ShowPopupAsync<InfoViewModel>(x => x.Message = Localization["BadUsernameOrPasswordMessage"].ToString());
                 }
             }
         }

@@ -5,18 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SmartEnergy.Controls"
     xmlns:converters="clr-namespace:SmartEnergy.Converters"
-    xmlns:database="clr-namespace:SmartEnergy.Database.Models"
     xmlns:material="clr-namespace:SmartEnergy.Material"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
     xmlns:views="clr-namespace:SmartEnergy.Views"
     x:Name="Root"
     x:DataType="viewModels:AddEditSceneViewModel">
 
     <ContentPage.Resources>
-        <toolkit:IsNullConverter x:Key="IsNullConverter" />
-        <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
-        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         <converters:ModeToGlyphConverter x:Key="ModeToGlyphConverter" />
         <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
     </ContentPage.Resources>
@@ -41,7 +36,6 @@
     </ContentPage.ToolbarItems>
 
     <Grid>
-
         <Border
             HorizontalOptions="FillAndExpand"
             Style="{StaticResource CardBorderStyle}"
@@ -52,8 +46,8 @@
                     Margin="25,0,25,15"
                     ItemsSource="{Binding Devices}">
                     <CollectionView.Header>
-                        <Grid ColumnDefinitions="60*,20*,10*" HeightRequest="55">
-                            <Label Style="{StaticResource TableHeaderStyle}" Text="{Binding Localization[MacAddress], Mode=OneWay}" />
+                        <Grid ColumnDefinitions="45*,25*, 15*,15*" HeightRequest="55">
+                            <Label Style="{StaticResource TableHeaderStyle}" Text="{Binding Localization[Name], Mode=OneWay}" />
                             <Label
                                 Grid.Column="1"
                                 Style="{StaticResource TableHeaderStyle}"
@@ -86,9 +80,9 @@
                         </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="viewModels:SceneDeviceItemViewModel">
+                        <DataTemplate x:DataType="viewModels:AddSceneDeviceViewModel">
                             <Grid
-                                ColumnDefinitions="60*,20*,10*"
+                                ColumnDefinitions="45*,25*, 15*,15*"
                                 HeightRequest="55"
                                 RowDefinitions="54, 1">
                                 <Grid.GestureRecognizers>
@@ -98,7 +92,7 @@
                                 <Label
                                     Grid.Row="0"
                                     Style="{StaticResource TableRowStyle}"
-                                    Text="{Binding Device.Mac}" />
+                                    Text="{Binding Name}" />
 
                                 <ImageButton
                                     Grid.Column="1"
@@ -114,6 +108,19 @@
 
                                 <ImageButton
                                     Grid.Column="2"
+                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.EditRelayCommand}"
+                                    CommandParameter="{Binding}"
+                                    HeightRequest="25">
+                                    <ImageButton.Source>
+                                        <material:MaterialImageSource
+                                            Glyph="{x:Static material:MaterialIcon.Pencil}"
+                                            Size="25"
+                                            Color="{StaticResource Primary}" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                                <ImageButton
+                                    Grid.Column="3"
                                     Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteDeviceCommand}"
                                     CommandParameter="{Binding}"
                                     HeightRequest="25">
@@ -127,7 +134,7 @@
 
                                 <BoxView
                                     Grid.Row="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="4"
                                     HeightRequest="1"
                                     Color="{StaticResource SecondaryTextColor}" />
                             </Grid>

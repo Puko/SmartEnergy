@@ -4,23 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:SmartEnergy.ViewModels"
+    x:Name="Scroll"
     x:DataType="viewModels:AddEditSceneViewModel"
     BackgroundColor="White"
-    Orientation="Both">
+    Orientation="Both"
+    SizeChanged="Grid_OnHandlerChanged">
     <Grid
         x:Name="MainGrid"
         BackgroundColor="Transparent"
         HorizontalOptions="FillAndExpand">
-
-        <!--<Image
-            Aspect="Center"
-            HorizontalOptions="FillAndExpand"
-            Source="{Binding SceneImage}"
-            VerticalOptions="FillAndExpand">
-            <Image.GestureRecognizers>
-                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Tapped_MoveControl" />
-            </Image.GestureRecognizers>
-        </Image>-->
 
         <AbsoluteLayout x:Name="Grid" ZIndex="10" />
 

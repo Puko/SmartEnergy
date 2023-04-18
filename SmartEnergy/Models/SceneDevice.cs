@@ -11,6 +11,8 @@ namespace SmartEnergy.Database.Models
         public string Mac { get; set; }
         public string Token { get; set; }
         public int Type { get; set; }
+        public string Relay { get; set; }
+        public int RelayOrder { get; set; }
 
         public double OriginalX { get; set; }
         public double OriginalY { get; set; }

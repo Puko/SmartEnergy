@@ -13,6 +13,7 @@ using SmartEnergy.Localization;
 using SmartEnergy.Services;
 using SmartEnergy.ViewModels;
 using SmartEnergy.Views;
+using AddSceneDeviceViewModel = SmartEnergy.Views.AddSceneDeviceViewModel;
 
 namespace SmartEnergy;
 
@@ -57,6 +58,7 @@ public static class MauiProgram
 
 		  builder.Services.AddSingleton<UserService>();
 		  builder.Services.AddSingleton<SceneService>();
+		  builder.Services.AddSingleton<SceneDeviceService>();
 		  builder.Services.AddSingleton<SmartEnergyApiService>();
 		  builder.Services.AddSingleton(s =>
 		  {
@@ -65,12 +67,11 @@ public static class MauiProgram
 		  });
 
 		  builder.Services.AddTransient<AddEditSceneViewModel>();
-		  builder.Services.AddTransient<SceneViewModel>();
+		  builder.Services.AddTransient<SceneListViewModel>();
 		  builder.Services.AddTransient<LoginViewModel>();
-		  builder.Services.AddTransient<SceneViewModel>();
+		  builder.Services.AddTransient<SceneListViewModel>();
 		  builder.Services.AddTransient<SceneDeviceViewModel>();
-		  builder.Services.AddTransient<MessagePopupViewModel>();
-		  builder.Services.AddTransient<SettingsDeviceViewModel>();
+		  builder.Services.AddTransient<ViewModels.InfoViewModel>();
 		  builder.Services.AddTransient<LogsViewModel>();
 		  builder.Services.AddTransient<MainViewModel>();
 		  builder.Services.AddTransient<LoadingViewModel>();
@@ -79,10 +80,9 @@ public static class MauiProgram
 		  builder.Services.AddTransient<AddEditSceneView>();
 		  builder.Services.AddTransient<MainView>();
 		  builder.Services.AddTransient<LoginView>();
-		  builder.Services.AddTransient<ScenePopupView>();
-		  builder.Services.AddTransient<SceneDevicePopupView>();
-		  builder.Services.AddTransient<MessagePopupView>();
-		  builder.Services.AddTransient<SettingsDevicePopupView>();
+		  builder.Services.AddTransient<EntryView>();
+		  builder.Services.AddTransient<AddSceneDeviceViewModel>();
+		  builder.Services.AddTransient<InfoView>();
 		  builder.Services.AddTransient<LogsView>();
 		  builder.Services.AddTransient<LoadingPopupView>();
 		  builder.Services.AddTransient<StateView>();
@@ -103,10 +103,9 @@ public static class MauiProgram
         navigationService.RegisterView<MainView, MainViewModel>();
         navigationService.RegisterView<AddEditSceneView, AddEditSceneViewModel>();
         navigationService.RegisterView<LoginView, LoginViewModel>();
-        navigationService.RegisterView<ScenePopupView, ScenePopupViewModel>();
-        navigationService.RegisterView<SceneDevicePopupView, SceneDeviceViewModel>();
-        navigationService.RegisterView<MessagePopupView, MessagePopupViewModel>();
-        navigationService.RegisterView<SettingsDevicePopupView, SettingsDeviceViewModel>();
+        navigationService.RegisterView<EntryView, EntryViewModel>();
+        navigationService.RegisterView<AddSceneDeviceViewModel, SceneDeviceViewModel>();
+        navigationService.RegisterView<InfoView, ViewModels.InfoViewModel>();
         navigationService.RegisterView<LoadingPopupView, LoadingViewModel>();
         navigationService.RegisterView<StateView, StateViewModel>();
 

@@ -7,7 +7,12 @@ namespace SmartEnergy.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? App.Current.GetResource<Color>("Primary") 
+            return Convert((bool)value);
+        }
+
+        public static Color Convert(bool value)
+        {
+            return (bool)value ? App.Current.GetResource<Color>("Primary")
                 : App.Current.GetResource<Color>("Gray200");
         }
 
