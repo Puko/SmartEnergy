@@ -8,20 +8,33 @@ namespace SmartEnergy.Extensions
 {
     public static class ResponseExtenstions
     {
-        public static async Task<bool> HandleExpiredTokenAsync(this string message, INavigationService navigationService, 
-            UserService userService, WebsocketClient client)
+        public static async Task<bool> HandleExpiredTokenAsync(this string message, INavigationService navigationService, ILogService logService,
+            UserService userService, WebsocketClient client , SmartEnergyApiService smartEnergyApi)
         {
             var response = JsonConvert.DeserializeObject<Response>(message);
             if (response?.IsTokenExpired == true)
             {
                 await client.UnsubscribeAll();
-                await MainThread.InvokeOnMainThreadAsync((Func<Task>)(async () =>
-                {
-                    await navigationService.ShowPopupAsync<InfoViewModel>((Action<InfoViewModel>)(x => { x.Message = "Device token is expired. Please login again"; }));
-                    userService.Logout();
-                    await navigationService.NavigateAsync<LoginViewModel>(resetNavigation: true);
-                }));
+                var userName = await SecureStorage.GetAsync("UserName");
+                var passWord = await SecureStorage.GetAsync("Password");
+                var data = await smartEnergyApi.LoginAsync(userName, passWord);
 
+                if (data.Succes)
+                {
+                    userService.Login(data.Value);
+                    foreach (var device in data.Value.Devices)
+                    {
+                        await client.SubscribeToMessagesAsync(true, true, device.Token, logService);
+                    }
+                }
+                else
+                {
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
+                    {
+                        userService.Logout();
+                        await navigationService.NavigateAsync<LoginViewModel>(resetNavigation: true);
+                    });
+                }
                 return true;
             }
 

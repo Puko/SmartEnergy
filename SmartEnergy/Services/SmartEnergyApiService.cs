@@ -33,7 +33,8 @@ namespace SmartEnergy.Services
                 var info = await ProcessResponse<UserInformation>(response);
                 if (info.Succes)
                 {
-                    var data = info.Value.Devices.Where(x => !x.Owner).ToList();
+                    //type 2 = disconnector
+                    var data = info.Value.Devices.Where(x => !x.Owner || x.Type != 2).ToList();
                     foreach (var item in data)
                     {
                         info.Value.Devices.Remove(item);

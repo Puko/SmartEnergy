@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartEnergy.Database.Models;
 using SmartEnergy.Interfaces;
 using SmartEnergy.Services;
 using SmartEnergy.Utils;
@@ -38,6 +39,9 @@ namespace SmartEnergy.ViewModels
                 
                 if(result.Succes)
                 {
+                    await SecureStorage.SetAsync("UserName", Username);
+                    await SecureStorage.SetAsync("Password", Sha256Hash.ComputeSha256Hash(Pasword));
+
                     _userService.Login(result.Value);
                     await _navigationService.NavigateAsync<MainViewModel>(resetNavigation: true);
                 }

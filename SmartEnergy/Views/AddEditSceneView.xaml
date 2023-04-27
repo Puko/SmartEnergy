@@ -51,7 +51,7 @@
                             <Label
                                 Grid.Column="1"
                                 Style="{StaticResource TableHeaderStyle}"
-                                Text="{Binding Localization[Online], Mode=OneWay}" />
+                                Text="{Binding Localization[State], Mode=OneWay}" />
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.EmptyView>

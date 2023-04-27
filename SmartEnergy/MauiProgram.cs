@@ -31,6 +31,8 @@ public static class MauiProgram
         ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => PrependToMappingImageSource(handler, view));
 #endif
 
+
+
         builder
            .UseMauiApp<App>()
 			  .UseMauiCommunityToolkitCore()

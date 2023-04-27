@@ -88,7 +88,10 @@ namespace SmartEnergy.ViewModels
         [RelayCommand]
         public async Task EditDeviceAsync(AddSceneDeviceViewModel sc)
         {
-            var enabled = !sc.IsOnline;
+            if (!sc.IsOnline.HasValue)
+                return;
+
+            var enabled = !sc.IsOnline.Value;
 
             var result = await SetRelayAsync(sc.Device, enabled);
             if (result?.Succes == true)
@@ -330,13 +333,15 @@ namespace SmartEnergy.ViewModels
             if (!await CheckConnection(_navigationService))
                 return null;
 
-            await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = message);
+            //disabled because of note from opponent
+            //await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = message);
             
             ApiResult<SetRelayResponse> result = await editRelay.Invoke();
 
             await Task.Delay(1000);
 
-            await _navigationService.ClosePopupAsync();
+            //disabled because of note from opponent
+            //await _navigationService.ClosePopupAsync();
 
             if (result?.Succes == true)
                 _logger.Info($"Set relay status: {result.Value.Status}, message: {result.Value.Message}");
@@ -357,23 +362,38 @@ namespace SmartEnergy.ViewModels
 
         public async void OnMessage(string message)
         {
-            if (await message.HandleExpiredTokenAsync(_navigationService, _userService, _websocketClient))
+            if (await message.HandleExpiredTokenAsync(_navigationService, _logger, _userService, _websocketClient, _apiService))
                 return;
 
             var deviceResponse = JsonConvert.DeserializeObject<DeviceResponseBase>(message);
             if (deviceResponse != null)
             {
-                var device = Devices.FirstOrDefault(x => x.Device.Mac.Equals(deviceResponse.Device));
-                if (device != null)
+                var devices = Devices.Where(x => x.Device.Mac.Equals(deviceResponse.Device)).ToList();
+                if (devices.Any())
                 {
-                    if (deviceResponse.IsState == false)
+                    if (deviceResponse.IsState == true)
+                    {
+                        var state = JsonConvert.DeserializeObject<DeviceStateResponse>(message);
+                        if (state != null)
+                        {
+                            foreach (var device in devices)
+                            {
+                                var online = state.Data.IsOnline;
+                                device.IsOnline = online;
+                            }
+                        }
+                    }
+                    else if (deviceResponse.IsState == false)
                     {
                         var data = JsonConvert.DeserializeObject<DeviceDataResponse>(message);
-
+                        
                         if (data != null)
                         {
-                            var isEnabled = data.Data.GetRelayState(device.Device.RelayOrder);
-                            device.IsOnline = isEnabled;
+                            foreach (var device in devices)
+                            {
+                                var online = data.Data.GetRelayState(device.Device.RelayOrder);
+                                device.IsOnline = online;
+                            }
                         }
                     }
                 }
