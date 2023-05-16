@@ -12,6 +12,7 @@ namespace SmartEnergy.Api.Websocket
         public string Message { get; set; }
 
         public bool IsTokenExpired => Code == 714;
+        public bool OfflineDevice => Code == 604;
     }
 
 }

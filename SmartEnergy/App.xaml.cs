@@ -4,7 +4,6 @@ using SmartEnergy.Localization;
 using SmartEnergy.Services;
 using SmartEnergy.ViewModels;
 using SmartEnergy.Views;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace SmartEnergy;
@@ -39,7 +38,10 @@ public partial class App : Application
             _logService.Info("Connecting to websocket...");
 
             await _websocketClient.ConnectAsync(_logService);
-            Listen();
+            if(_websocketClient.IsConnected)
+               Task.Run(async () => await ListenAsync());
+            else
+                Reconnect();
 
             _logService.Info("Connection success...");
         }
@@ -54,21 +56,32 @@ public partial class App : Application
             await _navigationService.NavigateAsync<LoginViewModel>(resetNavigation: true);
     }
 
-    private void Listen()
+    private void Reconnect()
     {
         Task.Run(async () =>
         {
             if (!_websocketClient.IsConnected)
-                return;
-
-            await foreach (var message in _websocketClient.ListenAsync(CancellationToken.None))
             {
-                if (message == WebsocketClient.DisconnectedMessage)
-                {
-                    await _websocketClient.ReconnectAsync(_logService);
-                    Listen();
-                }
+                await _websocketClient.ReconnectAsync(_logService);
+                await Task.Delay(2000);
+
+                Reconnect();
+            }
+            else
+            {
+                await ListenAsync();
             }
         });
+    }
+
+    private async Task ListenAsync()
+    {
+        await foreach (var message in _websocketClient.ListenAsync(CancellationToken.None))
+        {
+            if (message == WebsocketClient.DisconnectedMessage)
+            {
+                Reconnect();
+            }
+        }
     }
 }

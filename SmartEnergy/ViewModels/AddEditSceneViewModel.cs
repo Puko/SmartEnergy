@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.Concurrent;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartEnergy.Database.Models;
 using SmartEnergy.Services;
@@ -21,7 +22,7 @@ namespace SmartEnergy.ViewModels
         private readonly WebsocketClient _websocketClient;
         private readonly SmartEnergyApiService _apiService;
         private MemoryStream _imageStream;
-        private bool _editing;
+        private ConcurrentDictionary<string, string> _editing = new ConcurrentDictionary<string, string>();
 
         [ObservableProperty]
         private ImageSource _sceneImage;
@@ -59,17 +60,24 @@ namespace SmartEnergy.ViewModels
                 Scene = _sceneService.GetSceneById(SceneId.Value);
                 Devices = new ObservableCollection<AddSceneDeviceViewModel>(Scene.Devices.Select(x => new AddSceneDeviceViewModel(x)));
 
-                foreach (var item in Devices)
-                {
-                    await _websocketClient.SubscribeToMessagesAsync(true, true, item.Device.Token, _logger);
-                }
+                await _websocketClient.UnsubscribeAll();
 
-                if(Scene.Image != null)
+                await ResubscribeAsync();
+
+                if (Scene.Image != null)
                     SceneImage = ImageSource.FromStream(() => new MemoryStream(Scene.Image));
             }
             else
             {
                 await PickSceneImageAsync();
+            }
+        }
+
+        public async Task ResubscribeAsync()
+        {
+            foreach (var item in Devices)
+            {
+                await _websocketClient.SubscribeToMessagesAsync(true, true, item.Device.Token, _logger);
             }
         }
 
@@ -86,18 +94,24 @@ namespace SmartEnergy.ViewModels
         }
 
         [RelayCommand]
-        public async Task EditDeviceAsync(AddSceneDeviceViewModel sc)
+        public void EditDevice(AddSceneDeviceViewModel sc)
         {
-            if (!sc.IsOnline.HasValue)
-                return;
-
-            var enabled = !sc.IsOnline.Value;
-
-            var result = await SetRelayAsync(sc.Device, enabled);
-            if (result?.Succes == true)
+            Task.Run(async () =>
             {
-                sc.IsOnline = enabled;
-            }
+                if (!await CheckConnection(_navigationService))
+                    return;
+
+                if (!sc.IsOnline.HasValue)
+                    return;
+
+                var enabled = !sc.IsOnline.Value;
+
+                var result = await SetRelayAsync(sc.Device, enabled);
+                if (result?.Succes == true)
+                {
+                    sc.IsOnline = enabled;
+                }
+            });
         }
         
         [RelayCommand]
@@ -118,7 +132,7 @@ namespace SmartEnergy.ViewModels
 
             if (!vm.Cancelled)
             {
-                await EditRelayAsync(async () =>
+                await EditRelayAsync(sc.Device.Relay, async () =>
                 {
                     ApiResult<SetRelayResponse> result = null;
                     switch (sc.Device.RelayOrder)
@@ -222,6 +236,9 @@ namespace SmartEnergy.ViewModels
                     Scene.Devices.Add(item.Device);
                 }
                 
+                var user = _userService.GetUser();
+                Scene.User = user.Name;
+                    
                 if (Scene.Id == 0)
                     _sceneService.Add(Scene);
                 else
@@ -296,7 +313,7 @@ namespace SmartEnergy.ViewModels
         {
             _websocketClient.Unsubscribe(this);
 
-            var result = await EditRelayAsync(async () =>
+            var result = await EditRelayAsync(device.Relay, async () =>
             {
                 ApiResult<SetRelayResponse> result = null;
                 switch (device.RelayOrder)
@@ -323,16 +340,17 @@ namespace SmartEnergy.ViewModels
             return result;
         }
 
-        private async Task<ApiResult<SetRelayResponse>> EditRelayAsync(Func<Task<ApiResult<SetRelayResponse>>> editRelay, string message)
+        private async Task<ApiResult<SetRelayResponse>> EditRelayAsync(string deviceName, Func<Task<ApiResult<SetRelayResponse>>> editRelay, string message)
         {
-            if (_editing)
-                return null;
-
-            _editing = true;
-
             if (!await CheckConnection(_navigationService))
+            {
                 return null;
-
+            }
+          
+            if (_editing.TryGetValue(deviceName, out var _))
+                return null;
+            
+            
             //disabled because of note from opponent
             //await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = message);
             
@@ -355,7 +373,7 @@ namespace SmartEnergy.ViewModels
             }
 
 
-            _editing = false;
+            _editing.TryRemove(deviceName, out var _);
 
             return result;
         }

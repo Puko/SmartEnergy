@@ -2,6 +2,7 @@
 using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using System.Text;
+using SmartEnergy.Extensions;
 using SmartEnergy.Interfaces;
 
 namespace SmartEnergy.Api.Websocket
@@ -41,18 +42,29 @@ namespace SmartEnergy.Api.Websocket
             }
         }
 
-        public async Task ReconnectAsync(ILogService logService)
+        public async Task<bool> ReconnectAsync(ILogService logService)
         {
             try
             {
+                await this.UnsubscribeAll();
+
                 _websocket.Dispose();
                 _websocket = new ClientWebSocket();
                 await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
+                
+                foreach (var messageReceiver in _receivers)
+                {
+                    await messageReceiver.ResubscribeAsync();
+                }
+
+                return true;
             }
             catch (Exception e) 
             {
                 logService.Exception(e, "Reconnection failed.");
             }
+
+            return false;
         }
 
         public async Task ConnectAsync(ILogService logService)

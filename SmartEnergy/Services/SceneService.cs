@@ -8,16 +8,20 @@ namespace SmartEnergy.Services
     {
         private readonly SceneRepository _sceneRepository;
         private readonly SceneDeviceRepository _sceneDeviceRepository;
+        private readonly UserInformationRepository _userInformationRepository;
 
-        public SceneService(SceneRepository sceneRepository, SceneDeviceRepository sceneDeviceRepository)
+        public SceneService(SceneRepository sceneRepository, SceneDeviceRepository sceneDeviceRepository, UserInformationRepository userInformationRepository)
         {
             _sceneRepository = sceneRepository;
             _sceneDeviceRepository = sceneDeviceRepository;
+            _userInformationRepository = userInformationRepository;
         }
 
         public IEnumerable<Scene> GetScenes()
         {
-            return _sceneRepository.GetAll(null, x => x.Include(x => x.Devices))
+            var userData = _userInformationRepository.GetSingle(null, x => x.Include(x => x.User));
+
+            return _sceneRepository.GetAll(x => x.User.Equals(userData.User.Name), x => x.Include(x => x.Devices))
                 .Select(x => new Scene
                 {
                     Id = x.Id,

@@ -28,22 +28,23 @@ namespace SmartEnergy.Extensions
         {
             try
             {
-                if (!client.IsConnected)
-                    await client.ReconnectAsync(logService);
-
                 if (_subscribedDevices.Any(x => x.Equals(deviceToken)))
                     return true;
 
-
-                _subscribedDevices.Add(deviceToken);
-                await client.SendStringAsync(JsonConvert.SerializeObject(new DeviceStateRequest
+                if (client.IsConnected)
                 {
-                    DeviceToken = deviceToken,
-                    Data = enableData,
-                    State = enableState
-                }), CancellationToken.None);
+                    _subscribedDevices.Add(deviceToken);
+                    await client.SendStringAsync(JsonConvert.SerializeObject(new DeviceStateRequest
+                    {
+                        DeviceToken = deviceToken,
+                        Data = enableData,
+                        State = enableState
+                    }), CancellationToken.None);
 
-                return true;
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex) 
             {

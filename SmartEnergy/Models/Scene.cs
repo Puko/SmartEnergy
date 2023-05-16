@@ -10,6 +10,7 @@ namespace SmartEnergy.Database.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public byte[] Image { get; set; }
+        public string User { get; set; }
         public List<SceneDevice> Devices { get; set; } = new List<SceneDevice>();
 
         public double OriginalWidth { get; set; }

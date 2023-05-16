@@ -77,7 +77,7 @@ namespace SmartEnergy.ViewModels
             _logService.Info("Reconnecting...");
             //reconnect logic is in app.xaml.cs
             _client.Dispose();
-            await Task.Delay(1000);
+            await Task.Delay(5000);
 
             Connected = _client.IsConnected;
 

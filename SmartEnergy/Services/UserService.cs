@@ -23,8 +23,6 @@ namespace SmartEnergy.Services
                 _userRepository.Delete(existingUser);
                 _userRepository.Save();
             }
-
-            var test = _userRepository.GetAll();
         }
 
         public void Login(UserInformation user)
@@ -51,6 +49,12 @@ namespace SmartEnergy.Services
         {
             var existingUser = _userRepository.GetSingle(null, x => x.Include(x => x.User).Include(x => x.Devices));
             return existingUser.Devices;
+        }
+
+        public User GetUser()
+        {
+            var existingUser = _userRepository.GetSingle(null, x => x.Include(x => x.User).Include(x => x.Devices));
+            return existingUser.User;
         }
 
         public bool IsLogged()
