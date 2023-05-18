@@ -55,13 +55,13 @@ namespace SmartEnergy.ViewModels
 
         public override async Task InitializeAsync()
         {
+            _websocketClient.Subscribe(this);
+
             if (SceneId.HasValue)
             {
                 Scene = _sceneService.GetSceneById(SceneId.Value);
                 Devices = new ObservableCollection<AddSceneDeviceViewModel>(Scene.Devices.Select(x => new AddSceneDeviceViewModel(x)));
-
-                await _websocketClient.UnsubscribeAll();
-
+                
                 await ResubscribeAsync();
 
                 if (Scene.Image != null)
@@ -83,13 +83,11 @@ namespace SmartEnergy.ViewModels
 
         public override Task Shown()
         {
-            _websocketClient.Subscribe(this);
             return Task.CompletedTask;
         }
 
         public override ValueTask Disapear()
         {
-            _websocketClient.Unsubscribe(this);
             return ValueTask.CompletedTask;
         }
 
@@ -120,7 +118,7 @@ namespace SmartEnergy.ViewModels
             if (!await CheckConnection(_navigationService))
                 return;
 
-            _websocketClient.Unsubscribe(this);
+            //_websocketClient.Unsubscribe(this);
 
             EntryViewModel vm = new EntryViewModel(_navigationService)
             {
@@ -163,7 +161,7 @@ namespace SmartEnergy.ViewModels
                 }, Localization["ChangingRelayName"].ToString());
             }
 
-            _websocketClient.Subscribe(this);
+           // _websocketClient.Subscribe(this);
         }
 
         [RelayCommand]
@@ -311,7 +309,7 @@ namespace SmartEnergy.ViewModels
 
         public async Task<ApiResult<SetRelayResponse>> SetRelayAsync(SceneDevice device, bool enabled)
         {
-            _websocketClient.Unsubscribe(this);
+            //_websocketClient.Unsubscribe(this);
 
             var result = await EditRelayAsync(device.Relay, async () =>
             {
@@ -335,7 +333,7 @@ namespace SmartEnergy.ViewModels
                 return result;
             },  enabled ? Localization["TurnOnRelay"].ToString() : Localization["TurnOffRelay"].ToString());
 
-            _websocketClient.Subscribe(this);
+            //_websocketClient.Subscribe(this);
 
             return result;
         }
@@ -350,13 +348,12 @@ namespace SmartEnergy.ViewModels
             if (_editing.TryGetValue(deviceName, out var _))
                 return null;
             
-            
             //disabled because of note from opponent
             //await _navigationService.ShowPopupAsyncWithoutResult<LoadingViewModel>(x => x.Message = message);
             
             ApiResult<SetRelayResponse> result = await editRelay.Invoke();
 
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
 
             //disabled because of note from opponent
             //await _navigationService.ClosePopupAsync();
@@ -388,20 +385,8 @@ namespace SmartEnergy.ViewModels
             {
                 var devices = Devices.Where(x => x.Device.Mac.Equals(deviceResponse.Device)).ToList();
                 if (devices.Any())
-                {
-                    if (deviceResponse.IsState == true)
-                    {
-                        var state = JsonConvert.DeserializeObject<DeviceStateResponse>(message);
-                        if (state != null)
-                        {
-                            foreach (var device in devices)
-                            {
-                                var online = state.Data.IsOnline;
-                                device.IsOnline = online;
-                            }
-                        }
-                    }
-                    else if (deviceResponse.IsState == false)
+                { 
+                    if (deviceResponse.IsState == false)
                     {
                         var data = JsonConvert.DeserializeObject<DeviceDataResponse>(message);
                         

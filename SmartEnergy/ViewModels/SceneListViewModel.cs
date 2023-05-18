@@ -27,7 +27,8 @@ namespace SmartEnergy.ViewModels
 
         public override Task InitializeAsync()
         {
-            Scenes = new ObservableCollection<SceneListItemViewModel>(_sceneService.GetScenes().Select(x => new SceneListItemViewModel(x)).ToList());
+            Scenes = new ObservableCollection<SceneListItemViewModel>(_sceneService.GetScenes()
+                .Select(x => new SceneListItemViewModel(x)).ToList());
 
             return Task.CompletedTask;
         }
@@ -166,7 +167,8 @@ namespace SmartEnergy.ViewModels
             {
                 scene.Name = vm.Name;
                 scene.Scene.Name = vm.Name;
-                _sceneService.Update(scene.Scene);
+
+                _sceneService.UpdateName(scene.Scene.Id, vm.Name);
             }
         }
 

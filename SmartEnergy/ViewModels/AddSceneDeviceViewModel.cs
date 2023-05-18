@@ -5,7 +5,6 @@ namespace SmartEnergy.ViewModels
 {
     public partial class AddSceneDeviceViewModel : ObservableObject
     {
-        [ObservableProperty]
         private bool? _isOnline;    
         
         [ObservableProperty]
@@ -18,5 +17,15 @@ namespace SmartEnergy.ViewModels
         }
 
         public SceneDevice Device { get; }
+
+        public bool? IsOnline
+        {
+            get => _isOnline;
+            set
+            {
+                _isOnline = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

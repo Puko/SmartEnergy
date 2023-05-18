@@ -21,9 +21,9 @@ namespace SmartEnergy.Controls
             Device.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == nameof(AddSceneDeviceViewModel.IsOnline))
-                    BackgroundColor = BoolToColorConverter.Convert(Device.IsOnline);
+                    MainThread.BeginInvokeOnMainThread(() => BackgroundColor = BoolToColorConverter.Convert(Device.IsOnline)); 
                 else if (args.PropertyName == nameof(AddSceneDeviceViewModel.Name))
-                    _deviceLabel.Text = Device.Name;
+                    MainThread.BeginInvokeOnMainThread(() => _deviceLabel.Text = Device.Name);
 
             };
 

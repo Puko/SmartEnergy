@@ -20,8 +20,9 @@ namespace SmartEnergy.Services
         public IEnumerable<Scene> GetScenes()
         {
             var userData = _userInformationRepository.GetSingle(null, x => x.Include(x => x.User));
+            var userName = userData.User?.Name;
 
-            return _sceneRepository.GetAll(x => x.User.Equals(userData.User.Name), x => x.Include(x => x.Devices))
+            return _sceneRepository.GetAll(x => x.User == userName, x => x.Include(x => x.Devices))
                 .Select(x => new Scene
                 {
                     Id = x.Id,
@@ -44,6 +45,14 @@ namespace SmartEnergy.Services
 
             _sceneRepository.Add(scene);
             _sceneRepository.Save();
+        }
+
+        public void UpdateName(int sceneId, string name)
+        {
+           var scene = GetSceneById(sceneId);
+           scene.Name = name;
+
+           _sceneRepository.Update(scene);
         }
 
         public void Update(Scene scene)

@@ -104,6 +104,9 @@
                                             Size="25"
                                             Color="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}" />
                                     </ImageButton.Source>
+                                    <ImageButton.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=BindingContext.EditDeviceCommand}" CommandParameter="{Binding}" />
+                                    </ImageButton.GestureRecognizers>
                                 </ImageButton>
 
                                 <ImageButton

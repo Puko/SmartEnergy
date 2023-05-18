@@ -30,6 +30,10 @@ namespace SmartEnergy.Api.Websocket
 
         public void Subscribe(IMessageReceiver receiver)
         {
+            var r = _receivers.FirstOrDefault(x => x.GetType() == receiver.GetType());
+            if(r != null)
+                _receivers.Remove(r);
+
             _receivers.Add(receiver);
         }
 
@@ -46,12 +50,12 @@ namespace SmartEnergy.Api.Websocket
         {
             try
             {
-                await this.UnsubscribeAll();
-
                 _websocket.Dispose();
                 _websocket = new ClientWebSocket();
                 await _websocket.ConnectAsync(_websocketUrl, CancellationToken.None);
-                
+
+                await this.UnsubscribeAll();
+
                 foreach (var messageReceiver in _receivers)
                 {
                     await messageReceiver.ResubscribeAsync();
