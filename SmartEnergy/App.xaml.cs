@@ -36,7 +36,7 @@ public partial class App : Application
         try
         {
             _logService.Info("Connecting to websocket...");
-
+            
             await _websocketClient.ConnectAsync(_logService);
             if(_websocketClient.IsConnected)
                Task.Run(async () => await ListenAsync());

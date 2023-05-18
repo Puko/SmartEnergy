@@ -7,6 +7,7 @@ using Microsoft.Maui.Platform;
 using Mopups.Hosting;
 using SmartEnergy.Api.Websocket;
 using SmartEnergy.Database;
+using SmartEnergy.Database.Models;
 using SmartEnergy.Database.Repositories;
 using SmartEnergy.Interfaces;
 using SmartEnergy.Localization;
@@ -101,7 +102,7 @@ public static class MauiProgram
 
         var app = builder.Build();
 
-		  var navigationService = app.Services.GetRequiredService<INavigationService>();
+        var navigationService = app.Services.GetRequiredService<INavigationService>();
         navigationService.RegisterView<MainView, MainViewModel>();
         navigationService.RegisterView<AddEditSceneView, AddEditSceneViewModel>();
         navigationService.RegisterView<LoginView, LoginViewModel>();
@@ -113,8 +114,8 @@ public static class MauiProgram
 
 		  var db = app.Services.GetRequiredService<SmartEnergyDb>();
 		  db.Database.EnsureCreated();
-
-		  return app;
+		
+          return app;
 	 }
 
 #if __ANDROID__

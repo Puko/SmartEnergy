@@ -4,6 +4,7 @@ using SmartEnergy.Api.Websocket;
 using SmartEnergy.Interfaces;
 using SmartEnergy.Localization;
 using System.Globalization;
+using SmartEnergy.Database;
 
 namespace SmartEnergy.ViewModels
 {
@@ -12,6 +13,7 @@ namespace SmartEnergy.ViewModels
         private readonly INavigationService _navigationService;
         private readonly ILogService _logService;
         private readonly WebsocketClient _client;
+        private readonly SmartEnergyDb _db;
 
         [ObservableProperty]
         private bool _connected;
@@ -19,11 +21,12 @@ namespace SmartEnergy.ViewModels
         private string _language;
 
         public StateViewModel(INavigationService navigationService, ILogService logService,
-            WebsocketClient client)
+            WebsocketClient client, SmartEnergyDb db)
         {
             _navigationService = navigationService;
             _logService = logService;
             _client = client;
+            _db = db;
 
             _connected = _client.IsConnected;
 
